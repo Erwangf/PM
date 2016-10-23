@@ -15,7 +15,8 @@ import java.util.ArrayList;
 
 
 public class TwitterSearch {
-
+	
+	private static final String CSV_SEPARATOR = ";";
 
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -50,14 +51,19 @@ public class TwitterSearch {
         return new JSONObject(jsonText);
     }
 
-    //European countries use ";" as
-    //CSV separator because "," is their digit separator
-    private static final String CSV_SEPARATOR = ";";
-
+    /**
+     * This function write the content of an ArrayList of {@link Tweet} objects, at a specific path, given in parameters.
+     * 
+     * @param tweetList : The ArrayList of Tweets
+     * @param path : The relative path of the result file.
+     */
     private static void writeToCSV(ArrayList<Tweet> tweetList, String path) {
         try {
+        	//we open a BufferedWriter : it allow Java to write files, at a specific path ( given in parameters )
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
+            
             for (Tweet t : tweetList) {
+            	//for each tweet, we create one line, with all the informations
                 String oneLine = t.getUser() +
                         CSV_SEPARATOR +
                         t.getUsername() +
@@ -72,41 +78,26 @@ public class TwitterSearch {
                         CSV_SEPARATOR +
                         t.getNbLikes() +
                         CSV_SEPARATOR;
-
+                //and finally we write that line.
                 bw.write(oneLine);
                 bw.newLine();
             }
+            //at the end of the procedure, we flush the stream, and clsoe the buffer.
             bw.flush();
             bw.close();
         } catch (IOException ignored) {
         }
     }
 
-
-    public static void main(String[] args) throws IOException, JSONException {
-        if (args.length != 3) {
-            System.out.println("Erreur, arguments incorrects.\nUsage : TwitterSearch critères nombre_de_tweets chemin_du_fichier_csv");
-            System.out.println("Exemple :\nTwitterSearch \"cancer graviola\" 100 mytweets.csv");
-            return;
-        }
-        String q = URLEncoder.encode(args[0], "UTF-8");
-        int nMax = Integer.parseInt(args[1]);
-        String path = args[2];
-        System.out.println("=============== Twitter Search ===============");
-        System.out.println("Query = " + q);
-        System.out.println("Maximum tweets = " + nMax);
-
-        ArrayList<Tweet> myList = getTweetsFromTwitter(nMax, q);
-
-        System.out.println("Found " + myList.size() + " tweets.");
-        System.out.println("Saving into " + path + "...");
-        //when it's done, we write the list of tweets in a CSV file
-        writeToCSV(myList, path);
-        System.out.println("==============================================");
-
-
-    }
-
+    /**
+     * Return an ArrayList of {@link Tweets}, fetched from a Twitter Search, with custom query.
+     * 
+     * @param nMax : Maximum number of tweets
+     * @param q : the query
+     * @return an ArrayList of Tweets
+     * @throws IOException
+     * @throws JSONException
+     */
     public static ArrayList<Tweet> getTweetsFromTwitter(int nMax, String q) throws IOException, JSONException {
 
         int n = 0;
@@ -169,4 +160,35 @@ public class TwitterSearch {
         while (n < nMax);
         return myList;
     }
+
+    /*
+     * Main function, for testing the class.
+     * Args must be : the query, the maximum of tweets, and the result file location.
+     */
+    public static void main(String[] args) throws IOException, JSONException {
+        if (args.length != 3) {
+            System.out.println("Erreur, arguments incorrects.\nUsage : TwitterSearch critères nombre_de_tweets chemin_du_fichier_csv");
+            System.out.println("Exemple :\nTwitterSearch \"cancer graviola\" 100 mytweets.csv");
+            return;
+        }
+        String q = URLEncoder.encode(args[0], "UTF-8");
+        int nMax = Integer.parseInt(args[1]);
+        String path = args[2];
+        System.out.println("=============== Twitter Search ===============");
+        System.out.println("Query = " + q);
+        System.out.println("Maximum tweets = " + nMax);
+
+        ArrayList<Tweet> myList = getTweetsFromTwitter(nMax, q);
+
+        System.out.println("Found " + myList.size() + " tweets.");
+        System.out.println("Saving into " + path + "...");
+        //when it's done, we write the list of tweets in a CSV file
+        writeToCSV(myList, path);
+        System.out.println("==============================================");
+
+
+    }
+
+
 }
+
