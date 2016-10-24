@@ -15,6 +15,6 @@ Ouais salut c'est Franck !
 
 Morgane est la princesse la plus belle et la plus cool du monde ! <3 <3 <3
 
-Wesh c'est claire
+Mais oui c'est claire
 
 Cette phrase s'affiche si l'installation de Nicolas est OK..
