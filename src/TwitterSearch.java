@@ -188,7 +188,7 @@ public class TwitterSearch {
 	public static void main(String[] args) throws IOException, JSONException {
 		if (args.length != 3) {
 			System.out.println(
-					"Erreur, arguments incorrects.\nUsage : TwitterSearch critÃ¨res nombre_de_tweets chemin_du_fichier_csv");
+					"Erreur, arguments incorrects.\nUsage : TwitterSearch critères nombre_de_tweets chemin_du_fichier_csv");
 			System.out.println("Exemple :\nTwitterSearch \"cancer graviola\" 100 mytweets.csv");
 			return;
 		}
