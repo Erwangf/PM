@@ -1,5 +1,5 @@
 # PM
-Projet M1 Info Lyon 2 : Projet Intégré : Etude des rumeurs sur les réseaux sociaux
+Projet M1 Info Lyon 2 : Projet Intï¿½grï¿½ : Etude des rumeurs sur les rï¿½seaux sociaux
 
 
 
@@ -18,3 +18,5 @@ Morgane est la princesse la plus belle et la plus cool du monde ! <3 <3 <3
 Mais oui c'est claire
 
 Cette phrase s'affiche si l'installation de Nicolas est OK..
+
+C'est juste Kafil  \n..

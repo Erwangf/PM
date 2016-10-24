@@ -1,9 +1,9 @@
-
 import java.sql.Timestamp;
+
 
 /**
  * @author Erwan Giry-Fouquet
- *         M1 Informatique Université Lyon 2
+ *         M1 Informatique Universitï¿½ Lyon 2
  */
 
 
