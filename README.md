@@ -19,4 +19,5 @@ Wesh c'est claire
 
 Cette phrase s'affiche si l'installation de Nicolas est OK..
 
-GDS7
+GDS7__
+
