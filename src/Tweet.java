@@ -1,15 +1,15 @@
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * @author Erwan Giry-Fouquet
- *         M1 Informatique UniversitÃ© Lyon 2
+ *         M1 Informatique Université Lyon 2
  */
 
 
 public class Tweet {
     private String user;
+    private String tweetId;
     private String username;
     private Timestamp timeStamp;
     private String content;
@@ -19,15 +19,20 @@ public class Tweet {
 
 
 
-    public Tweet(String user, String username, Timestamp timeStamp, String content, int nbResponses, int nbRetweets, int nbLikes) {
-        this.user = user;
-        this.username = username;
-        this.timeStamp = timeStamp;
-        this.content = content;
-        this.nbResponses = nbResponses;
-        this.nbRetweets = nbRetweets;
-        this.nbLikes = nbLikes;
-    }
+
+
+	public Tweet(String user, String tweetId, String username, Timestamp timeStamp, String content, int nbResponses,
+			int nbRetweets, int nbLikes) {
+		super();
+		this.user = user;
+		this.tweetId = tweetId;
+		this.username = username;
+		this.timeStamp = timeStamp;
+		this.content = content;
+		this.nbResponses = nbResponses;
+		this.nbRetweets = nbRetweets;
+		this.nbLikes = nbLikes;
+	}
 
     @Override
     public String toString() {
@@ -57,6 +62,14 @@ public class Tweet {
         this.user = user;
     }
 
+    public String getTweetId() {
+		return tweetId;
+	}
+
+	public void setTweetId(String tweetId) {
+		this.tweetId = tweetId;
+	}
+	
     public String getUsername() {
         return username;
     }
