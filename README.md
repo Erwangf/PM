@@ -19,4 +19,4 @@ Mais oui c'est claire
 
 Cette phrase s'affiche si l'installation de Nicolas est OK..
 
-C'est juste Kafil  \n......\n
+C'est juste Kafil  \n......
