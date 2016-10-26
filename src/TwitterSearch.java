@@ -97,7 +97,6 @@ public class TwitterSearch {
 	 * @throws JSONException
 	 */
 	public static ArrayList<Tweet> getTweetsFromTwitter(int nMax, String q) throws IOException, JSONException {
-
 		int n = 0;
 		int lastLog = 0;
 		String url;
