@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class TwitterSearch {
 
-	private static final String CSV_SEPARATOR = ";";
+	private static final String CSV_SEPARATOR = "\t";
 
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();

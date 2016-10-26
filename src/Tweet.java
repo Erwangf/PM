@@ -32,6 +32,8 @@ public class Tweet {
 		this.nbResponses = nbResponses;
 		this.nbRetweets = nbRetweets;
 		this.nbLikes = nbLikes;
+		
+		
 	}
 
     @Override
