@@ -1,5 +1,5 @@
 # PM
-Projet M1 Info Lyon 2 : Projet Intï¿½grï¿½ : Etude des rumeurs sur les rï¿½seaux sociaux
+Projet M1 Info Lyon 2 : Projet Intégré : Etude des rumeurs sur les réseaux sociaux
 
 
 
