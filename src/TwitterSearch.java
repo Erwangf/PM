@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-public class TwitterSearch {
+public class TwitterSearch{
 
 	private static final String CSV_SEPARATOR = "\t";
 
@@ -202,9 +202,14 @@ public class TwitterSearch {
 		ArrayList<Tweet> myList = getTweetsFromTwitter(nMax, q);
 
 		System.out.println("Found " + myList.size() + " tweets.");
+		
+		Mongo base = new Mongo();
+		base.connexionMongo("localhost",0,"BaseTest", "Twitter");
+		base.insertMongo(myList);
+		
 		System.out.println("Saving into " + path + "...");
 		// when it's done, we write the list of tweets in a CSV file
-		writeToCSV(myList, path);
+	//	writeToCSV(myList, path);
 		System.out.println("==============================================");
 
 	}
