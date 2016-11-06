@@ -1,5 +1,7 @@
 import java.sql.Timestamp;
 
+import twitter4j.Status;
+
 
 /**
  * @author Erwan Giry-Fouquet
@@ -20,7 +22,16 @@ public class Tweet {
 
 
 
-
+    public Tweet(Status status){
+    	this.user = status.getUser().getScreenName();
+		this.tweetId = Long.toString(status.getId());
+		this.username = status.getUser().getName();
+		this.timeStamp = new Timestamp(status.getCreatedAt().getTime());
+		this.content = status.getText();
+		this.nbResponses = 0;
+		this.nbRetweets = status.getRetweetCount();
+		this.nbLikes = status.getFavoriteCount();
+    }
 	public Tweet(String user, String tweetId, String username, Timestamp timeStamp, String content, int nbResponses,
 			int nbRetweets, int nbLikes) {
 		super();
