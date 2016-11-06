@@ -5,6 +5,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -51,6 +56,24 @@ public class TwitterSearch {
 		return new JSONObject(jsonText);
 	}
 
+	private static ArrayList<Tweet> getRetweetById(String id){
+		ArrayList<Tweet> res = new ArrayList<Tweet>();
+		try {
+            Twitter twitter = new TwitterFactory().getInstance();
+            ArrayList<Status> statuses = (ArrayList<Status>)(twitter.getRetweets(Long.parseLong(id)));
+            for (Status status : statuses) {
+                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+                res.add(new Tweet((Status)status));
+            }
+            System.out.println("done.");
+        } catch (TwitterException te) {
+            te.printStackTrace();
+            System.out.println("Failed to get retweets: " + te.getMessage());
+            System.exit(-1);
+        }
+		return res;
+	}
+	
 	/**
 	 * This function write the content of an ArrayList of {@link Tweet} objects,
 	 * at a specific path, given in parameters.
@@ -80,7 +103,8 @@ public class TwitterSearch {
 			// buffer.
 			bw.flush();
 			bw.close();
-		} catch (IOException ignored) {
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -96,7 +120,7 @@ public class TwitterSearch {
 	 * @throws IOException
 	 * @throws JSONException
 	 */
-	public static ArrayList<Tweet> getTweetsFromTwitter(int nMax, String q) throws IOException, JSONException {
+	public static ArrayList<Tweet> getTweetsFromTwitter(int nMax, String q,  boolean getRetweets) throws IOException, JSONException {
 
 		int n = 0;
 		int lastLog = 0;
@@ -134,8 +158,7 @@ public class TwitterSearch {
 																			// of
 																			// tweets
 
-			if (tweet_block.size() == 0)
-				break;
+			if (tweet_block.size() == 0) break;
 			// we iterate on every tweet
 			for (Element e : tweet_block) {
 				// each information is accessible via a wisely chosen
@@ -146,7 +169,7 @@ public class TwitterSearch {
 				String user = e.select(".fullname.js-action-profile-name.show-popup-with-id").text();
 				// username :
 				String username = e.select("span.username.js-action-profile-name").first().text();
-				// timestamp, in unix time (see :
+				// timestamp, in Unix time (see :
 				// https://en.wikipedia.org/wiki/Unix_time )
 				String timeStamp_string = e.select("._timestamp").first().attr("data-time");
 				Timestamp timestamp = new Timestamp(Long.parseLong(timeStamp_string));
@@ -166,27 +189,40 @@ public class TwitterSearch {
 				Tweet t = new Tweet(user, id, username, timestamp, content, nbResponses, nbRetweets, nbLikes);
 				// and we add it to our list
 				myList.add(t);
+				if(getRetweets && t.getNbRetweets()>0){
+					myList.addAll(getRetweetById(t.getTweetId()));
+					try {
+						Thread.sleep(5500); //twitter API limit : max 180 request in 15 minutes ==> min 5 delay between requests...
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 				n += 1;
 				// log, 1 by 1%
 				if (((double) (n - lastLog) / nMax) >= 0.01) {
 					lastLog = n;
 					System.out.println("Progress -> " + Math.round(((double) n / nMax) * 100) + "%");
 				}
-				if (n == nMax)
-					break;
-
+				if (n == nMax)break;
 			}
 
 		} while (n < nMax);
 		return myList;
 	}
-
+	
+	
+	public static ArrayList<Tweet> getTweetsFromTwitter(int nMax, String q) throws IOException, JSONException{
+		return getTweetsFromTwitter(nMax, q, false);
+		
+	}
+	
 	/*
 	 * Main function, for testing the class. Args must be : the query, the
 	 * maximum of tweets, and the result file location.
 	 */
 	public static void main(String[] args) throws IOException, JSONException {
-		if (args.length != 3) {
+		if (args.length != 4) {
 			System.out.println(
 					"Erreur, arguments incorrects.\nUsage : TwitterSearch critères nombre_de_tweets chemin_du_fichier_csv");
 			System.out.println("Exemple :\nTwitterSearch \"cancer graviola\" 100 mytweets.csv");
@@ -195,16 +231,22 @@ public class TwitterSearch {
 		String q = URLEncoder.encode(args[0], "UTF-8");
 		int nMax = Integer.parseInt(args[1]);
 		String path = args[2];
+		String option = args[3];
+		boolean getRetweets = option.toUpperCase().equals("ALL");
+		
 		System.out.println("=============== Twitter Search ===============");
 		System.out.println("Query = " + q);
 		System.out.println("Maximum tweets = " + nMax);
 
-		ArrayList<Tweet> myList = getTweetsFromTwitter(nMax, q);
+		ArrayList<Tweet> myList = getTweetsFromTwitter(nMax, q, getRetweets);
+		
+		
 
 		System.out.println("Found " + myList.size() + " tweets.");
 		System.out.println("Saving into " + path + "...");
 		// when it's done, we write the list of tweets in a CSV file
 		writeToCSV(myList, path);
+		System.out.println("Done. !");
 		System.out.println("==============================================");
 
 	}
