@@ -18,8 +18,13 @@ public class Tweet {
     private int nbResponses;
     private int nbRetweets;
     private int nbLikes;
+    private String originalTweetd;
+    private String inReplyToTweetId;
 
 
+    /*================================================================================================*/
+    //            CONSTRUCTORS
+    /*================================================================================================*/
 
 
     public Tweet(Status status){
@@ -44,8 +49,12 @@ public class Tweet {
 		this.nbRetweets = nbRetweets;
 		this.nbLikes = nbLikes;
 		
-		
 	}
+	
+    /*================================================================================================*/
+    //            FUNCTIONS & METHODS
+    /*================================================================================================*/
+
 
     @Override
     public String toString() {
@@ -130,5 +139,17 @@ public class Tweet {
     public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
+	public String getOriginalTweetd() {
+		return originalTweetd;
+	}
+	public void setOriginalTweetd(String originalTweetd) {
+		this.originalTweetd = originalTweetd;
+	}
+	public String getInReplyToTweetId() {
+		return inReplyToTweetId;
+	}
+	public void setInReplyToTweetId(String inReplyToTweetId) {
+		this.inReplyToTweetId = inReplyToTweetId;
+	}
 
 }
