@@ -42,6 +42,7 @@ public class TwitterSearch {
 		connection.setRequestProperty("user-agent",
 				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36");
 		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		connection.setRequestProperty("x-overlay-request", "true");
 
 		connection.setRequestMethod("GET");
 
@@ -104,6 +105,50 @@ public class TwitterSearch {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	
+	
+	public static ArrayList<Tweet> getRepliesFromTweet(Tweet t) throws IOException, JSONException{
+		String url = "https://twitter.com/"+t.getUsername()+"/status/"+t.getTweetId();
+		JSONObject json = readJsonFromUrl(url); // we get json object
+		String items_html = (String) json.get("page");
+		Document doc = Jsoup.parse(items_html);
+		Elements tweets_block = doc.select(".js-stream-tweet");
+		ArrayList<Tweet> result = new ArrayList<Tweet>();
+		for (Element e : tweets_block) {
+			String id = e.attr("data-item-id");
+			// user :
+			String user = e.select(".fullname.js-action-profile-name.show-popup-with-id").text();
+			// username :
+			String username = e.select("span.username.js-action-profile-name").first().text();
+			// timestamp, in Unix time (see : https://en.wikipedia.org/wiki/Unix_time )
+			String timeStamp_string = e.select("._timestamp").first().attr("data-time");
+			Timestamp timestamp = new Timestamp(Long.parseLong(timeStamp_string));
+			// content :
+			String content = e.select(".TweetTextSize.js-tweet-text.tweet-text").text();
+			// Responses :
+			int nbResponses = Integer.parseInt(
+					e.select(".ProfileTweet-action--reply").select(".ProfileTweet-actionCount").attr("data-tweet-stat-count"));
+			// retweets :
+			int nbRetweets = Integer.parseInt(
+					e.select(".ProfileTweet-action--retweet").select(".ProfileTweet-actionCount").attr("data-tweet-stat-count"));
+			// likes :
+			int nbLikes = Integer.parseInt(
+					e.select(".ProfileTweet-action--favorite").select(".ProfileTweet-actionCount").attr("data-tweet-stat-count"));
+
+			// we store data into a Tweet class
+			Tweet r = new Tweet(user, id, username, timestamp, content, nbResponses, nbRetweets, nbLikes);
+			r.setInReplyToTweetId(t.getTweetId());
+			result.add(r);
+		}
+		return result;
+		
+		
+	}
+	
+	
 
 	/**
 	 * Return an ArrayList of {@link Tweets}, fetched from a Twitter Search, with custom query.
