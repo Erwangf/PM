@@ -17,6 +17,6 @@ Morgane est la princesse la plus belle et la plus cool du monde ! <3 <3 <3
 
 Mais oui c'est claire
 
-Cette phrase s'affiche si l'installation de Nicolas est OK..
+Cette phrase s'affiche si l'installation de Nicolas est OK..0.
 
 C'est juste Kafil  \n......\n\n\n
