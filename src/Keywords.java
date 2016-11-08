@@ -10,7 +10,7 @@ public class Keywords {
 
 	public static void main(String[] args) {
 		try {
-			ArrayList<Tweet> al = TwitterSearch.getTweetsFromTwitter(20, "cancer graviola");
+			ArrayList<Tweet> al = TwitterSearch.getTweetsFromTwitter(20, "cancer%20graviola");
 			ArrayList<String> words = WordExtractor(al);
 			for(String w : words){
 				System.out.println(w);
@@ -81,8 +81,6 @@ public class Keywords {
 }
 
 
-	private static DeleteStopwords()
-	
 }
 
 
