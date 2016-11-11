@@ -16,8 +16,8 @@ import javax.swing.border.MatteBorder;
 
 import org.json.JSONException;
 
-import lib.Tweet;
-import lib.TwitterSearch;
+import modules.data.Tweet;
+import modules.data.TwitterSearch;
 
 import java.awt.GridLayout;
 import java.awt.Insets;

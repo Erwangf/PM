@@ -22,7 +22,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
-import lib.Tweet;
+import modules.data.Tweet;
 
 import java.awt.SystemColor;
 

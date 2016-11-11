@@ -1,4 +1,4 @@
-package lib;
+package modules.data;
 import java.sql.Timestamp;
 import twitter4j.Status;
 
