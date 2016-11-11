@@ -6,25 +6,21 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
-import javax.swing.border.MatteBorder;
 
 import org.json.JSONException;
 
 import modules.data.Tweet;
 import modules.data.TwitterSearch;
 
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.io.IOException;
-import java.util.ArrayList;
-import javax.swing.JSeparator;
-
+@SuppressWarnings("serial")
 public class TweetListModule extends JPanel {
 
     private JPanel mainList;
@@ -102,7 +98,6 @@ public class TweetListModule extends JPanel {
                 try {
 					 alt = TwitterSearch.getTweetsFromTwitter(50, "cancer%20graviola");
 				} catch (IOException | JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
                 //création du module

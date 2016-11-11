@@ -1,41 +1,33 @@
 package modules.tweetList;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
+import java.awt.event.MouseWheelListener;
+import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.MatteBorder;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.View;
-import javax.swing.SwingConstants;
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.MouseWheelListener;
-import java.util.Date;
-import java.awt.GridLayout;
 import javax.swing.JTextArea;
-import javax.swing.DropMode;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.UIManager;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
+import javax.swing.SwingConstants;
+import javax.swing.border.MatteBorder;
 
 import modules.data.Tweet;
 
-import java.awt.SystemColor;
-
+@SuppressWarnings("serial")
 public class TweetCell extends JPanel{
 	
+
 	private Tweet associatedTweet;
 	
 	 
 	
 
-	public TweetCell(Tweet associatedTweet){
+	public TweetCell(Tweet _associatedTweet){
 		super();
-		this.associatedTweet = associatedTweet;
+		associatedTweet = _associatedTweet;
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout(0, 0));
         this.setBorder(new MatteBorder(0, 0, 1, 0, Color.GRAY));
