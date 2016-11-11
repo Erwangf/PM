@@ -1,12 +1,8 @@
+package lib;
 import java.sql.Timestamp;
-
 import twitter4j.Status;
 
 
-/**
- * @author Erwan Giry-Fouquet
- *         M1 Informatique Universit� Lyon 2
- */
 
 
 public class Tweet {

@@ -1,3 +1,4 @@
+package lib;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -56,6 +57,7 @@ public class TwitterSearch {
 		return new JSONObject(jsonText);
 	}
 
+	@SuppressWarnings("unchecked")
 	private static ArrayList<Tweet> getRetweetById(String id) {
 		ArrayList<Tweet> res = new ArrayList<Tweet>();
 		try {
@@ -224,7 +226,7 @@ public class TwitterSearch {
 					try {
 						Thread.sleep(5500); // twitter API limit : max 180 request in 15 minutes ==> min 5 delay between requests...
 					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
 					}
 				}
