@@ -9,6 +9,7 @@ import org.bson.conversions.Bson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
@@ -60,16 +61,19 @@ public class Mongo {
 		}
 		
 		char[] password = pass.toCharArray();
-		
+	/*	
 		List<ServerAddress> serverAddresses = new ArrayList<ServerAddress>();
         ServerAddress address = new ServerAddress(host, port);
         serverAddresses.add(address);
 		
 		List<MongoCredential> credentials = new ArrayList<MongoCredential>();
-	    MongoCredential credential = MongoCredential.createPlainCredential(user, "$external", password);
+	  //  MongoCredential credential = MongoCredential.createPlainCredential(user, "$external", password);
+	    MongoCredential credential = MongoCredential.createMongoCRCredential(user, nomBase, password);
 	    credentials.add(credential);
 	    MongoClient mongoClient = new MongoClient(serverAddresses, credentials);
-	
+	*/
+	    MongoClient mongoClient = new MongoClient(new MongoClientURI( "mongodb://"+user+":"+pass+"@"+host+":"+port+"/"+nomBase ));
+	    
 		MongoDatabase maBase = mongoClient.getDatabase(nomBase);
 	
 		this.twitter = maBase.getCollection(nomCollection);
