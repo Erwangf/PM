@@ -203,11 +203,22 @@ public class TwitterSearch{
 
 		System.out.println("Found " + myList.size() + " tweets.");
 		
-		Mongo base = new Mongo();
-		base.connexionMongo("localhost",0,"BaseTest", "Twitter");
-		base.insertMongo(myList);
 		
-		System.out.println("Saving into " + path + "...");
+		//création de l'instance mongo
+		Mongo base = new Mongo();
+	//	base.ConnexionMongo("localhost",0,"BaseTest", "Twitter");
+		//connexion à la base distante
+		base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
+		System.out.println("1");
+		//Insertion de la liste de Tweets récupérés précédemment
+		base.InsertMongo(myList);
+		System.out.println(base.GetNbTweets());
+		System.out.println("2");
+		System.out.println(base.GetAllTweets());
+		System.out.println("3");
+		System.out.println(base.GetAllDates());
+		
+		//System.out.println("Saving into " + path + "...");
 		// when it's done, we write the list of tweets in a CSV file
 	//	writeToCSV(myList, path);
 		System.out.println("==============================================");
