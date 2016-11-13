@@ -143,7 +143,7 @@ public class TwitterSearch {
 		do {
 
 			// default url -- look, the parameter max_position is empty
-			url = "https://twitter.com/i/search/timeline?vertical=default&q=" + q
+			url = "https://twitter.com/i/search/timeline?vertical=default&q=" + URLEncoder.encode(q, "UTF-8")
 					+ "&src=typd&include_available_features=1&include_entities=1&reset_error_state=false&max_position";
 
 			if (n != 0)
@@ -228,7 +228,7 @@ public class TwitterSearch {
 			System.out.println("Exemple :\nTwitterSearch \"cancer graviola\" 100 mytweets.csv");
 			return;
 		}
-		String q = URLEncoder.encode(args[0], "UTF-8");
+		String q = args[0];
 		int nMax = Integer.parseInt(args[1]);
 		String path = args[2];
 		String option = args[3];
