@@ -42,7 +42,7 @@ public class TweetCell extends JPanel{
         userLabel.setHorizontalAlignment(SwingConstants.LEFT);
         headerPanel.add(userLabel);
         
-        JLabel dateLabel = new JLabel((new Date(associatedTweet.getTimeStamp().getTime())).toString());
+        JLabel dateLabel = new JLabel((new Date(associatedTweet.getTimeStamp().getTime()*1000)).toString());
         dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         headerPanel.add(dateLabel);
         

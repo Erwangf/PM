@@ -103,9 +103,9 @@ public class TweetListModule extends JPanel {
                 //création du module
                 TweetListModule tweetList = new TweetListModule();
                 //remplissage avec les tweets téléchargés
-                alt.forEach((t)->{
-                	tweetList.AddTweet(t);
-                	});
+                for(int i=alt.size()-1; i>=0; i--){
+                	tweetList.AddTweet(alt.get(i));
+                }
                //ajout du module à la fênetre
                 frame.getContentPane().add(tweetList);
                 frame.pack();
