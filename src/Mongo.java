@@ -31,8 +31,12 @@ public class Mongo {
 	//Connexion mongo simple/locale
 	public void ConnexionMongo(String host, int port, String nomBase, String nomCollection){
 		
-		if(host.isEmpty() || port == 0){
+		if(host.isEmpty()){
 			host = "localhost";
+						
+		}
+		
+		if( port == 0){
 			port = 27017;			
 		}
 		
@@ -46,10 +50,15 @@ public class Mongo {
 	//Connexion mongo authentifiée
 	public void ConnexionMongo(String host, int port, String nomBase, String nomCollection, String user, String pass){
 		
-		if(host.isEmpty() || port == 0){
+		if(host.isEmpty()){
 			host = "localhost";
+						
+		}
+		
+		if( port == 0){
 			port = 27017;			
 		}
+		
 		char[] password = pass.toCharArray();
 		
 		List<ServerAddress> serverAddresses = new ArrayList<ServerAddress>();
