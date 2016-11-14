@@ -16,12 +16,12 @@ public class TestMongo {
 		}
 		String q = URLEncoder.encode(args[0], "UTF-8");
 		int nMax = Integer.parseInt(args[1]);
-		String path = args[2];
+		//String path = args[2];
 		System.out.println("=============== Twitter Search ===============");
 		System.out.println("Query = " + q);
 		System.out.println("Maximum tweets = " + nMax);
 
-		ArrayList<Tweet> myList = getTweetsFromTwitter(nMax, q);
+		ArrayList<Tweet> myList = TwitterSearch.getTweetsFromTwitter(nMax, q);
 
 		System.out.println("Found " + myList.size() + " tweets.");
 		
