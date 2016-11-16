@@ -33,14 +33,19 @@ public class TestMongo {
 	//	base.ConnexionMongo("localhost",0,"BaseTest", "Twitter");
 		//connexion à la base distante
 		base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
-		System.out.println("1");
+		
 		//Insertion de la liste de Tweets récupérés précédemment
 		base.InsertMongo(myList);
-		System.out.println(base.GetNbTweets());
-		System.out.println("2");
-		System.out.println(base.GetAllTweets());
-		System.out.println("3");
-		System.out.println(base.GetAllDates());
+//		System.out.println(base.GetNbTweets());
+//		
+//		System.out.println(base.GetAllTweets());
+//		
+//		System.out.println(base.GetAllDates());
+//		
+//		System.out.println(base.GetTweetsKeyWord("stronger"));
+		
+	//	System.out.println(base.GetTweetsBlocks(2)+"\n");
+		System.out.println(base.GetTweetsBlocks(3).size());
 		
 		//System.out.println("Saving into " + path + "...");
 		// when it's done, we write the list of tweets in a CSV file
@@ -48,5 +53,7 @@ public class TestMongo {
 		System.out.println("==============================================");
 
 	}
+	
+	
 
 }
