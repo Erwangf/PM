@@ -105,11 +105,10 @@ public class Keywords extends JFrame {
 //			content=t.getContent().replaceAll("]", ""); 
 //			content=t.getContent().replaceAll("@", ""); 
 			
-				if (c==caracteres.size()-1){
-			content=content.toUpperCase();
-			String[] mywords = content.split(" ");
-			
-			words.addAll(new ArrayList(Arrays.asList(mywords)));
+			if (c==caracteres.size()-1){
+				content=content.toUpperCase();
+				String[] mywords = content.split(" ");
+				words.addAll(new ArrayList(Arrays.asList(mywords)));
 				}
 			}
 		}
