@@ -12,12 +12,14 @@ import org.bson.conversions.Bson;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Projections;
 
@@ -142,6 +144,70 @@ public class Mongo {
 		tweetsDates = twitter.find().projection(projection).into(new ArrayList<Document>());
 		return tweetsDates;
 	}
+	
+	
+	
+	public ArrayList<Tweet> GetTweetsKeyWord(String keyWord){
+		ArrayList<Tweet> tweetsV2 = new ArrayList<Tweet>();
+		ArrayList<Document> tweetsV1 = new ArrayList<Document>();
+		
+	//	tweetsV1 = twitter.find({"content":keyWord}).into(new ArrayList<Document>());
+
+	//	BasicDBObject whereQuery = new BasicDBObject();
+	//	whereQuery.put("content", ".*"+keyWord+".*");
+		
+		BasicDBObject regexQuery = new BasicDBObject();
+		regexQuery.put("content",
+			new BasicDBObject("$regex", ".*"+keyWord+".*")
+			.append("$options", "i"));
+		
+		MongoCursor<Document> cursor = twitter.find(regexQuery).iterator();
+		while(cursor.hasNext()) {
+		   tweetsV1.add(cursor.next());
+		}
+	
+		Iterator<Document> iter = tweetsV1.iterator();
+		while (iter.hasNext()) {
+			Document doc = iter.next();
+			//System.out.println(doc);
+			Tweet t = new Tweet(doc.get("user").toString(), doc.get("TweetId").toString(), doc.get("username").toString(), new Timestamp(Long.parseLong(doc.get("date").toString())), doc.get("content").toString(), Integer.parseInt(doc.get("nbResponses").toString()), Integer.parseInt(doc.get("nbRetweets").toString()), Integer.parseInt(doc.get("nbLikes").toString()));
+			
+			tweetsV2.add(t);
+		}
+		return tweetsV2;
+	}
+	
+	
+	
+	public ArrayList<Tweet> GetTweetsBlocks(int page){
+		ArrayList<Tweet> tweetsV2 = new ArrayList<Tweet>();
+		ArrayList<Document> tweetsV1;
+		
+		
+		//pagination limitation par 100 
+		tweetsV1 = twitter.find().skip((page-1)*100).limit(100).into(new ArrayList<Document>());
+
+		Iterator<Document> iter = tweetsV1.iterator();
+		while (iter.hasNext()) {
+			Document doc = iter.next();
+			//System.out.println(doc);
+			Tweet t = new Tweet(doc.get("user").toString(), doc.get("TweetId").toString(), doc.get("username").toString(), new Timestamp(Long.parseLong(doc.get("date").toString())), doc.get("content").toString(), Integer.parseInt(doc.get("nbResponses").toString()), Integer.parseInt(doc.get("nbRetweets").toString()), Integer.parseInt(doc.get("nbLikes").toString()));
+			
+			tweetsV2.add(t);
+		}
+		return tweetsV2;
+	}
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
-
