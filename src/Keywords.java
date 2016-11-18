@@ -19,6 +19,9 @@ import javax.swing.JTable;
 
 import org.json.JSONException;
 
+
+import java.util.regex.*;
+
 public class Keywords extends JFrame {
 
 	public static void main(String[] args) {
@@ -31,7 +34,7 @@ public class Keywords extends JFrame {
 	public static Map<String, Integer> PrintWords(){
 		Map<String, Integer> countsorted= new LinkedHashMap<>();
 		try {
-			ArrayList<Tweet> al = TwitterSearch.getTweetsFromTwitter(150, "cancer%20graviola");
+			ArrayList<Tweet> al = TwitterSearch.getTweetsFromTwitter(200, "cancer%20graviola");   
 			ArrayList<String> words = WordExtractor(al);
 			ArrayList<String> stopWords=GetStopWords ();
 			words = FilterStopWords(words,stopWords);
@@ -59,60 +62,16 @@ public class Keywords extends JFrame {
 	
 	private static ArrayList<String> WordExtractor(ArrayList<Tweet> tweets)
 	{
-		
-		ArrayList <String> words=new ArrayList <String> ();
+		ArrayList <String> words=new ArrayList <String> ();		
 		String content;
-		
-		ArrayList <String> caracteres=new ArrayList();
-		caracteres.add("#");
-		//caracteres.add("//[");
-		caracteres.add("-");
-		caracteres.add("//+");
-		caracteres.add("//?");
-		caracteres.add(".");
-		caracteres.add("^");
-		caracteres.add("|");
-		caracteres.add(":");
-		caracteres.add(",");
-		//caracteres.add("(");
-		//caracteres.add(")");
-		caracteres.add("//!");
-		caracteres.add("//&");
-		//caracteres.add("//]");
-		caracteres.add("//@");
-		caracteres.add("¿");
-		
 		for (Tweet t : tweets)
 		{
-			for (int c=0;c<caracteres.size();c++){
-				//System.out.println("Entrée 1");
-				content=t.getContent().replaceAll((String) (caracteres.get(c)), "");     //[-+?#.^|:,()!&]@
-				//System.out.println("Entrée 2");
-				System.out.println(content);
-//			////content=t.getContent().replaceAll("[", ""); 
-//			///content=t.getContent().replaceAll("-", ""); 
-//			//content=t.getContent().replaceAll("+", ""); 
-//			//content=t.getContent().replaceAll("?", ""); 
-//			//content=t.getContent().replaceAll(".", ""); 
-//			//content=t.getContent().replaceAll("^", ""); 
-//			content=t.getContent().replaceAll("|", ""); 
-//			content=t.getContent().replaceAll(":", ""); 
-//			content=t.getContent().replaceAll(",", ""); 
-//			content=t.getContent().replaceAll("(", ""); 
-//			content=t.getContent().replaceAll(")", ""); 
-//			content=t.getContent().replaceAll("!", ""); 
-//			content=t.getContent().replaceAll("&", ""); 
-//			content=t.getContent().replaceAll("]", ""); 
-//			content=t.getContent().replaceAll("@", ""); 
-			
-			if (c==caracteres.size()-1){
+
+				content=t.getContent().replaceAll( "\\s\\p{Punct}|[,.#@>:;/!»*«¿'?)]", "");  //[\\s\\p{Punct}]     \\p{Punct}[^#@'&¿]
 				content=content.toUpperCase();
-				String[] mywords = content.split(" ");
+				String[] mywords = content.split(" ");	
 				words.addAll(new ArrayList(Arrays.asList(mywords)));
-				}
-			}
 		}
-		
 		return words;		
 	}
 
@@ -265,7 +224,7 @@ public class Keywords extends JFrame {
 		       
 		        int i=0;
 		        int intermediaire;
-		        Object[][] donneees = new Object [20][2] ;
+		        Object[][] donneees = new Object [25][2] ;
 		        //for (int i=0;i<20;i++){
 	        	  for (Map.Entry<String, Integer> entry : Map.entrySet()) {
 						//System.out.println("Mot : " + entry.getKey() + " Count : " + entry.getValue());
@@ -275,7 +234,7 @@ public class Keywords extends JFrame {
 	        		   //intermediaire=intermediaire;  // Il faut a tout prix caster cette variable en String
 	        		   donneees [i][1] = entry.getValue();
 	        		   i++;
-	        		   if (i==20){
+	        		   if (i==25){
 	        			   break;
 	        		   }
 					}
@@ -301,14 +260,7 @@ public class Keywords extends JFrame {
 		        getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
 		 
 		        pack();
-		    }
-	 
-	 
-	 
-	 
-	 
-	 
-	 
+		    }	 
 }
 
 
