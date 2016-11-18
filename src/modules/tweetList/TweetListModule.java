@@ -17,6 +17,7 @@ import javax.swing.UIManager;
 
 import org.json.JSONException;
 
+import modules.data.Mongo;
 import modules.data.Tweet;
 import modules.data.TwitterSearch;
 
@@ -26,6 +27,7 @@ public class TweetListModule extends JPanel {
     private JPanel mainList;
     private int prefSizeX = 600;
     private int prefSizeY = 400;
+    private Mongo base;
 
     public TweetListModule() {
     	
@@ -47,6 +49,9 @@ public class TweetListModule extends JPanel {
 
     }
     
+    public void setMonboBase(Mongo b){
+    	this.base = b;
+    }
 
     public void AddTweet(Tweet t){
     	TweetCell panel = new TweetCell(t);
@@ -67,6 +72,13 @@ public class TweetListModule extends JPanel {
     	mainList.removeAll();
     	validate();
         repaint();
+    }
+    
+    public void showLatestTweets(){
+    	this.RemoveAllTweet();
+    	base.GetTweetsBlocks(1).forEach((t)->{
+    		this.AddTweet(t);
+    	});
     }
     
     
