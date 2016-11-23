@@ -206,23 +206,6 @@ public class Mongo {
     }
 
     /**
-     * Document to Tweet converter
-     * @param doc the document to convert
-     * @return a tweet
-     */
-    private Tweet DocToTweet(Document doc) {
-        return new Tweet(
-                doc.get("user").toString(),
-                doc.get("TweetId").toString(),
-                doc.get("username").toString(),
-                new Timestamp(Long.parseLong(doc.get("date").toString())),
-                doc.get("content").toString(),
-                Integer.parseInt(doc.get("nbResponses").toString()),
-                Integer.parseInt(doc.get("nbRetweets").toString()),
-                Integer.parseInt(doc.get("nbLikes").toString()));
-    }
-
-    /**
      * Retourne un block de Tweet, de longueur limitée (100 normalement, voir Mongo.pageSize )
      *
      * @param page - le numéro de la page (ça commence à la page 1)
@@ -246,10 +229,46 @@ public class Mongo {
     }
 
     /**
-     * Vide toute la base de donnée. A éviter :p
+     * Vide toute la base de donnée.
      */
     public void DropMongo() {
         twitter.drop();
+    }
+
+
+    /**
+     * Document to Tweet converter
+     * @param doc the document to convert
+     * @return a tweet
+     */
+    private Tweet DocToTweet(Document doc) {
+        return new Tweet(
+                doc.get("user").toString(),
+                doc.get("TweetId").toString(),
+                doc.get("username").toString(),
+                new Timestamp(Long.parseLong(doc.get("date").toString())),
+                doc.get("content").toString(),
+                Integer.parseInt(doc.get("nbResponses").toString()),
+                Integer.parseInt(doc.get("nbRetweets").toString()),
+                Integer.parseInt(doc.get("nbLikes").toString()));
+    }
+
+    /**
+     * Juste pour la démo, j'l'ai fait quand même :p ça peut servir on sait jamais !
+     * @param documents une liste de documents
+     * @return une liste de tweets
+     */
+    private ArrayList<Tweet> DocsToTweetsList(ArrayList<Document>documents){
+        ArrayList<Tweet> tweets = new ArrayList<>();
+
+        Iterator<Document> iter = documents.iterator();
+        while (iter.hasNext()) {
+            Document doc = iter.next();
+            Tweet t = DocToTweet(doc);
+            tweets.add(t);
+        }
+
+        return tweets;
     }
 
 
