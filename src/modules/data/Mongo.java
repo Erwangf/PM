@@ -33,7 +33,7 @@ public class Mongo {
      * @param nomBase Le nom de la base avec laquelle on travaille
      * @param nomCollection La collection sur laquelle on travaille
      */
-    public void ConnexionMongo(String host, int port, String nomBase, String nomCollection) {
+    void ConnexionMongo(String host, int port, String nomBase, String nomCollection) {
 
         if (host.isEmpty()) host = "localhost";
 
