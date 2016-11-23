@@ -18,6 +18,8 @@ import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.Color;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
 
 public class MainFrame extends JFrame {
 
@@ -46,6 +48,15 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1200, 800);
 		setLocationRelativeTo(null);
+
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu menu_Accueil = new JMenu("Accueil");
+		menuBar.add(menu_Accueil);
+		
+		JMenu menuAide = new JMenu("Aide");
+		menuBar.add(menuAide);
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.GRAY);
@@ -59,11 +70,15 @@ public class MainFrame extends JFrame {
 		base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
 		
 		
-		
+		//Module liste tweet
 		TweetListModule tlm = new TweetListModule();
 		contentPane.add(tlm);
 		tlm.setMonboBase(base);
 		tlm.showLatestTweets();
+		
+		
+		
+		
 		
 	}
 
