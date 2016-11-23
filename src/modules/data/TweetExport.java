@@ -16,7 +16,6 @@ public class TweetExport {
      * @param tweetList The ArrayList of Tweets
      * @param path      The relative path of the result file.
      */
-
     public static void writeToCSV(ArrayList<Tweet> tweetList, String path) {
         try {
             // we open a BufferedWriter : it allow Java to write files, at a specific path ( given in parameters )

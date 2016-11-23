@@ -56,7 +56,7 @@ public class TwitterSearch {
         return new JSONObject(jsonText);
     }
 
-    @SuppressWarnings("unchecked")
+
     private static ArrayList<Tweet> getRetweetById(String id) {
         ArrayList<Tweet> res = new ArrayList<Tweet>();
         try {
@@ -115,9 +115,6 @@ public class TwitterSearch {
 
 
     }
-
-
-
 
      /**
      * Return an ArrayList of {@link Tweet}, fetched from a Twitter Search, with custom query.
