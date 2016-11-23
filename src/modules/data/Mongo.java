@@ -88,6 +88,7 @@ public class Mongo {
 	
 	//Insertion d'une ArrayList de Tweets dans la base Mongo
 	public void InsertMongo(ArrayList<Tweet> tweetList){
+		twitter.drop() ;
 		Iterator<Tweet> iter = tweetList.iterator();
 		while (iter.hasNext()) {
 			Tweet t = iter.next();
@@ -199,8 +200,9 @@ public class Mongo {
 	}
 
 	
-
-	
+	public void DropMongo(){
+		twitter.drop() ;
+	}
 	
 	
 	
