@@ -1,10 +1,8 @@
-
+package modules.data;
 import java.sql.Timestamp;
+import twitter4j.Status;
 
-/**
- * @author Erwan Giry-Fouquet
- *         M1 Informatique Université Lyon 2
- */
+
 
 
 public class Tweet {
@@ -16,11 +14,25 @@ public class Tweet {
     private int nbResponses;
     private int nbRetweets;
     private int nbLikes;
+    private String originalTweetd;
+    private String inReplyToTweetId;
 
 
+    /*================================================================================================*/
+    //            CONSTRUCTORS
+    /*================================================================================================*/
 
 
-
+    public Tweet(Status status){
+    	this.user = status.getUser().getScreenName();
+		this.tweetId = Long.toString(status.getId());
+		this.username = status.getUser().getName();
+		this.timeStamp = new Timestamp(status.getCreatedAt().getTime());
+		this.content = status.getText();
+		this.nbResponses = 0;
+		this.nbRetweets = status.getRetweetCount();
+		this.nbLikes = status.getFavoriteCount();
+    }
 	public Tweet(String user, String tweetId, String username, Timestamp timeStamp, String content, int nbResponses,
 			int nbRetweets, int nbLikes) {
 		super();
@@ -32,7 +44,13 @@ public class Tweet {
 		this.nbResponses = nbResponses;
 		this.nbRetweets = nbRetweets;
 		this.nbLikes = nbLikes;
+		
 	}
+	
+    /*================================================================================================*/
+    //            FUNCTIONS & METHODS
+    /*================================================================================================*/
+
 
     @Override
     public String toString() {
@@ -117,5 +135,17 @@ public class Tweet {
     public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
+	public String getOriginalTweetd() {
+		return originalTweetd;
+	}
+	public void setOriginalTweetd(String originalTweetd) {
+		this.originalTweetd = originalTweetd;
+	}
+	public String getInReplyToTweetId() {
+		return inReplyToTweetId;
+	}
+	public void setInReplyToTweetId(String inReplyToTweetId) {
+		this.inReplyToTweetId = inReplyToTweetId;
+	}
 
 }
