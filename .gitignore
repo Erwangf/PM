@@ -11,12 +11,7 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /target/
-<<<<<<< Upstream, based on branch 'Motscles' of https://github.com/Erwangf/PM
+/results/*
+M1_PI.iml
 
-
-/results/
-<<<<<<< HEAD
-=======
->>>>>>> 7171ea0 git
-=======
->>>>>>> branch 'master' of https://github.com/Erwangf/PM
+/.idea/
