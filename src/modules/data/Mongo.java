@@ -68,7 +68,8 @@ public class Mongo {
 		
 		char[] password = pass.toCharArray();
 	/*	
-		List<ServerAddress> serverAddresses = new ArrayList<ServerAddress>();
+		List<ServerAddress> serverAddresses
+		= new ArrayList<ServerAddress>();
         ServerAddress address = new ServerAddress(host, port);
         serverAddresses.add(address);
 		
