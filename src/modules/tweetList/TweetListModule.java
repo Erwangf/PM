@@ -24,7 +24,6 @@ import modules.data.TwitterSearch;
 public class TweetListModule extends JPanel {
 
     private JPanel mainList;
-    private Mongo base;
 
     public TweetListModule() {
 
@@ -41,9 +40,6 @@ public class TweetListModule extends JPanel {
         add(jsp);
     }
 
-    public void setMonboBase(Mongo b) {
-        this.base = b;
-    }
 
     public void AddTweet(Tweet t) {
         TweetCell panel = new TweetCell(t);
@@ -66,10 +62,7 @@ public class TweetListModule extends JPanel {
         repaint();
     }
 
-    public void showLatestTweets() {
-        this.RemoveAllTweet();
-        base.GetTweetsBlocks(1).forEach(this::AddTweet);
-    }
+
 
 
     @Override
@@ -88,7 +81,7 @@ public class TweetListModule extends JPanel {
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
                 }
 
                 //cr�ation d'une fen�tre pour afficher le module

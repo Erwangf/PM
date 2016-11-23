@@ -55,7 +55,7 @@ public class Mongo {
 	}
 	
 	
-	//Connexion mongo authentifiée
+	//Connexion mongo authentifiÃ©e
 	public void ConnexionMongo(String host, int port, String nomBase, String nomCollection, String user, String pass){
 		
 		if(host.isEmpty()){
@@ -84,7 +84,7 @@ public class Mongo {
 		MongoDatabase maBase = mongoClient.getDatabase(nomBase);
 	
 		this.twitter = maBase.getCollection(nomCollection);
-		System.out.println("connexion distante réussie");
+		System.out.println("connexion distante rï¿½ussie");
 	}
 	
 	//Insertion d'une ArrayList de Tweets dans la base Mongo
@@ -111,7 +111,7 @@ public class Mongo {
 	}
 	
 
-	//renvoie le nombre d'éléments dans la collection (nombre de Tweets ici)
+	//renvoie le nombre d'ï¿½lï¿½ments dans la collection (nombre de Tweets ici)
 	public long GetNbTweets(){
 		long nbTweet;
 		nbTweet = twitter.count();

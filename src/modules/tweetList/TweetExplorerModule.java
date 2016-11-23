@@ -30,6 +30,9 @@ public class TweetExplorerModule extends JPanel {
     // =========================================================
 
 
+    /**
+     * Initialize la l'explorateur de Tweets avec les derniers Tweets
+     */
     public void initialize(){
         if(base==null) throw new Error("Erreur, pas de base de donnée connectée");
         tlm.RemoveAllTweet();
