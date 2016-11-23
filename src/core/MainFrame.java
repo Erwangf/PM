@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import modules.tweetList.TweetExplorerModule;
 import org.json.JSONException;
 
 import modules.data.Mongo;
@@ -61,11 +62,11 @@ public class MainFrame extends JFrame {
 		base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
 		
 		
-		
-		TweetListModule tlm = new TweetListModule();
-		contentPane.add(tlm);
-		tlm.setMonboBase(base);
-		tlm.showLatestTweets();
+		//Tweet Explorer Module
+		TweetExplorerModule tem = new TweetExplorerModule();
+		contentPane.add(tem);
+		tem.setBase(base);
+		tem.initialize();
 		
 	}
 
