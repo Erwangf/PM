@@ -10,6 +10,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Projections;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,9 +29,10 @@ public class Mongo {
     /**
      * [A EVITER]
      * Connexion locale à une base de donnée, sans identification.
-     * @param host L'adresse du serveur MongoDB
-     * @param port Le port du serveur MongoDB
-     * @param nomBase Le nom de la base avec laquelle on travaille
+     *
+     * @param host          L'adresse du serveur MongoDB
+     * @param port          Le port du serveur MongoDB
+     * @param nomBase       Le nom de la base avec laquelle on travaille
      * @param nomCollection La collection sur laquelle on travaille
      */
     void ConnexionMongo(String host, int port, String nomBase, String nomCollection) {
@@ -47,19 +49,20 @@ public class Mongo {
 
     /**
      * Connexion locale à une base de donnée, AVEC identification.
-     * @param host L'adresse du serveur MongoDB
-     * @param port Le port du serveur MongoDB
-     * @param nomBase Le nom de la base avec laquelle on travaille
+     *
+     * @param host          L'adresse du serveur MongoDB
+     * @param port          Le port du serveur MongoDB
+     * @param nomBase       Le nom de la base avec laquelle on travaille
      * @param nomCollection La collection sur laquelle on travaille
-     * @param user nom d'utilisateur
-     * @param pass mot de passe
+     * @param user          nom d'utilisateur
+     * @param pass          mot de passe
      */
     public void ConnexionMongo(String host, int port, String nomBase, String nomCollection, String user, String pass) {
 
         if (host.isEmpty()) host = "localhost";
-        if (port == 0)  port = 27017;
+        if (port == 0) port = 27017;
     /*
-		List<ServerAddress> serverAddresses = new ArrayList<ServerAddress>();
+        List<ServerAddress> serverAddresses = new ArrayList<ServerAddress>();
         ServerAddress address = new ServerAddress(host, port);
         serverAddresses.add(address);
 		
@@ -79,6 +82,7 @@ public class Mongo {
 
     /**
      * Insertion d'une ArrayList de Tweets dans la base Mongo
+     *
      * @param tweetList La liste de Tweets à insérer
      */
     public void InsertMongo(ArrayList<Tweet> tweetList) {
@@ -104,7 +108,6 @@ public class Mongo {
     }
 
     /**
-     *
      * @return le nombre d'éléments dans la collection (nombre de Tweets ici)
      */
     public long GetNbTweets() {
@@ -115,6 +118,7 @@ public class Mongo {
 
     /**
      * [NE PAS UTILISER] Retourne TOUS les Tweets de la base de donnée
+     *
      * @return tous les Tweets de la collection dans une ArrayList de type Tweet
      */
     public ArrayList<Tweet> GetAllTweets() {
@@ -136,6 +140,7 @@ public class Mongo {
 
     /**
      * renvoie toutes les dates en timestamp (pour l'instant ?)
+     *
      * @return une liste de Documents, avec pour champ "date", en timestamp
      */
     public ArrayList<Document> GetAllDates() {
@@ -148,6 +153,7 @@ public class Mongo {
 
     /**
      * Fait une recherche dans la base pour un seul mot clé
+     *
      * @param keyWord Le mot clé à rechercher
      * @return Une ArrayList de Tweets contenant ce mot clé.
      */
@@ -181,8 +187,50 @@ public class Mongo {
         return tweetsV2;
     }
 
+
+    /**
+     *
+     * @param keyWords an array of keywords (max = pageSize)&
+     * @return an ArrayList of Tweets containing all the keywords
+     */
+    public ArrayList<Tweet> GetTweetsKeyWordsArray(String[] keyWords) {
+        ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+        String str_keyWords = "";
+        for (String keyword : keyWords) {
+            str_keyWords = str_keyWords.concat("(?=.*" + keyword + ")");
+        }
+        str_keyWords = str_keyWords.concat(".+");
+
+        BasicDBObject regexQuery = new BasicDBObject();
+        regexQuery.put("content",
+                new BasicDBObject("$regex", str_keyWords)
+                        .append("$options", "i"));
+
+        for (Document doc : twitter.find(regexQuery)) {
+            Tweet t = DocToTweet(doc);
+            tweets.add(t);
+            if(tweets.size()==pageSize) return tweets;
+
+        }
+        return tweets;
+    }
+
+    private Tweet DocToTweet(Document doc) {
+        return new Tweet(
+                doc.get("user").toString(),
+                doc.get("TweetId").toString(),
+                doc.get("username").toString(),
+                new Timestamp(Long.parseLong(doc.get("date").toString())),
+                doc.get("content").toString(),
+                Integer.parseInt(doc.get("nbResponses").toString()),
+                Integer.parseInt(doc.get("nbRetweets").toString()),
+                Integer.parseInt(doc.get("nbLikes").toString()));
+    }
+
+
     /**
      * Retourne un block de Tweet, de longueur limitée (100 normalement, voir Mongo.pageSize )
+     *
      * @param page - le numéro de la page (ça commence à la page 1)
      * @return Une ArrayList de Tweets
      */
