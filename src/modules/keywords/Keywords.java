@@ -22,6 +22,7 @@ import org.json.JSONException;
 
 import modules.data.Tweet;
 import modules.data.TwitterSearch;
+//import testJFreeChart.Mongo;
 
 import java.util.regex.*;
 
@@ -31,13 +32,25 @@ public class Keywords extends JFrame {
 		Map<String, Integer> mamap = new LinkedHashMap<>();
 			mamap=PrintWords();
 		new Keywords(mamap).setVisible(true);
-
+// Java UTF8 To ANSI
 	}
 	
 	public static Map<String, Integer> PrintWords(){
 		Map<String, Integer> countsorted= new LinkedHashMap<>();
-		try {
-			ArrayList<Tweet> al = TwitterSearch.getTweetsFromTwitter(200, "cancer%20graviola");   
+		//try {
+			//création de l'instance mongo
+			modules.data.Mongo base = new modules.data.Mongo();
+			
+			//connexion à la base distante
+			base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
+			
+			
+			//ArrayList<Tweet> al = TwitterSearch.getTweetsFromTwitter(100, "cancer%20graviola");  
+			ArrayList<Tweet> al = base.GetTweetsBlocks(1);  
+			for (int i=2;i<10;i++){
+				al.addAll(base.GetTweetsBlocks(i));
+			}
+			
 			ArrayList<String> words = WordExtractor(al);
 			ArrayList<String> stopWords=GetStopWords ();
 			words = FilterStopWords(words,stopWords);
@@ -56,10 +69,10 @@ public class Keywords extends JFrame {
 
 			//Map<String,Integer> map = WordCount(words);
 			//PrintWordCount(count);
-		} catch (IOException | JSONException e) {
+		//} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			//e.printStackTrace();
+		//}
 		return countsorted ;
 	}
 	
@@ -125,13 +138,35 @@ public class Keywords extends JFrame {
 	private static ArrayList<String> FilterStopWords(ArrayList<String> words,ArrayList<String> stopwords ){
 		
 		ArrayList<String> result = new ArrayList<String>();
-				
+			//byte temp;	
 		for (String w : words)
 		{
-			if (! stopwords.contains(w))
-			{
-				result.add(w);
+			try{
+			byte[] bytes=w.getBytes("ISO8859_15");
+			String t = new String( bytes , "Cp1252" );   //Cp1252
+			t=t.replaceAll( "Â", "A");
+			t=t.replaceAll( "Á", "A");
+			t=t.replaceAll( "Í", "I");
+			t=t.replaceAll( "//?", "");
+			t=t.replaceAll( "Ó", "O");
+			
+			if (! stopwords.contains(w) && w.length()>1)
+				{
+					result.add(t);
+				}
+				
+			} catch (java.io.UnsupportedEncodingException e) { 
+			    // Le codage n'est pas reconnu. 
+			    e.printStackTrace(); 
 			}
+			
+			
+			
+			
+//			if (! stopwords.contains(w))
+//			{
+//				result.add(t);
+//			}
 		}
 						
 		return 	result;	
