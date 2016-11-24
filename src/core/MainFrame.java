@@ -13,6 +13,7 @@ import modules.data.Mongo;
 import modules.data.Tweet;
 import modules.data.TwitterSearch;
 import modules.tweetList.TweetListModule;
+import modules.keywords.Keywords;
 
 import java.awt.GridLayout;
 import java.io.IOException;
@@ -77,6 +78,11 @@ public class MainFrame extends JFrame {
 		contentPane.add(tlm);
 		tlm.setMonboBase(base);
 		tlm.showLatestTweets();
+		
+		//Module Keyword
+		//Keywords kw = new Keywords();
+		//contentPane.add(kw);
+		//kw.setMonboBase(base);
 		
 		
 		
