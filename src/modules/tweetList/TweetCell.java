@@ -75,7 +75,7 @@ public class TweetCell extends JPanel{
         add(centerPanel,BorderLayout.CENTER);
         
         JPanel footerPanel = new JPanel();
-        footerPanel.setBackground(new Color(153, 204, 255));
+        footerPanel.setBackground(new Color(223, 223, 223));
         add(footerPanel, BorderLayout.SOUTH);
         footerPanel.setLayout(new GridLayout(0, 3, 0, 0));
         

@@ -20,6 +20,7 @@ import javax.swing.JTable;
 
 import org.json.JSONException;
 
+import modules.data.Mongo;
 import modules.data.Tweet;
 import modules.data.TwitterSearch;
 //import testJFreeChart.Mongo;
@@ -28,6 +29,14 @@ import java.util.regex.*;
 
 public class Keywords extends JFrame {
 
+
+    private Mongo base;
+	
+    public void setMonboBase(Mongo b){
+    	this.base = b;
+    }
+
+    
 	public static void main(String[] args) {
 		Map<String, Integer> mamap = new LinkedHashMap<>();
 			mamap=PrintWords();
@@ -47,10 +56,13 @@ public class Keywords extends JFrame {
 			
 			//ArrayList<Tweet> al = TwitterSearch.getTweetsFromTwitter(100, "cancer%20graviola");  
 			ArrayList<Tweet> al = base.GetTweetsBlocks(1);  
-			for (int i=2;i<10;i++){
-				al.addAll(base.GetTweetsBlocks(i));
-			}
 			
+		
+				for (int i=2;i<10;i++){
+					al.addAll(base.GetTweetsBlocks(i));
+				}
+				
+				
 			ArrayList<String> words = WordExtractor(al);
 			ArrayList<String> stopWords=GetStopWords ();
 			words = FilterStopWords(words,stopWords);

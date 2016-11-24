@@ -21,16 +21,12 @@ import modules.data.Mongo;
 import modules.data.Tweet;
 import modules.data.TwitterSearch;
 
-@SuppressWarnings("serial")
 public class TweetListModule extends JPanel {
 
     private JPanel mainList;
-    private int prefSizeX = 600;
-    private int prefSizeY = 400;
-    private Mongo base;
 
     public TweetListModule() {
-    	
+
         setLayout(new BorderLayout());
         mainList = new JPanel();
         mainList.setBackground(Color.WHITE);
@@ -41,87 +37,73 @@ public class TweetListModule extends JPanel {
         gbl_mainList.columnWeights = new double[]{0.0, Double.MIN_VALUE};
         gbl_mainList.rowWeights = new double[]{0.0, Double.MIN_VALUE};
         mainList.setLayout(gbl_mainList);
-        
-        
         add(jsp);
-        
-        
-
-    }
-    
-    public void setMonboBase(Mongo b){
-    	this.base = b;
     }
 
-    public void AddTweet(Tweet t){
-    	TweetCell panel = new TweetCell(t);
-        
+
+    public void AddTweet(Tweet t) {
+        TweetCell panel = new TweetCell(t);
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5,0,5,0);
+        gbc.insets = new Insets(5, 0, 5, 0);
         mainList.add(panel, gbc, 0);
-        
+
 
         validate();
         repaint();
     }
-    
-    public void RemoveAllTweet(){
-    	mainList.removeAll();
-    	validate();
+
+    public void RemoveAllTweet() {
+        mainList.removeAll();
+        validate();
         repaint();
     }
-    
-    public void showLatestTweets(){
-    	this.RemoveAllTweet();
-    	base.GetTweetsBlocks(1).forEach((t)->{
-    		this.AddTweet(t);
-    	});
-    }
-    
-    
-    
 
-    
+
+
+
     @Override
     public Dimension getPreferredSize() {
+        int prefSizeY = 400;
+        int prefSizeX = 600;
         return new Dimension(prefSizeX, prefSizeY);
     }
-    
-    
+
+
     //exemple d'utilisation de la classe TweetListModule
-    public static void main(String[] args){
-    	//permet de démarrer créer l'interface graphique plus tard, quand le reste a été fait. Plus propre, évite des erreurs
+    public static void main(String[] args) {
+
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
                 }
 
-                //création d'une fenêtre pour afficher le module
+                //crï¿½ation d'une fenï¿½tre pour afficher le module
                 JFrame frame = new JFrame("Test Tweet List");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                //Récupération des tweets
+                //Rï¿½cupï¿½ration des tweets
                 ArrayList<Tweet> alt = new ArrayList<Tweet>();
                 try {
-					 alt = TwitterSearch.getTweetsFromTwitter(50, "cancer%20graviola");
-				} catch (IOException | JSONException e) {
-					e.printStackTrace();
-				}
-                //création du module
-                TweetListModule tweetList = new TweetListModule();
-                //remplissage avec les tweets téléchargés
-                for(int i=alt.size()-1; i>=0; i--){
-                	tweetList.AddTweet(alt.get(i));
+                    alt = TwitterSearch.getTweetsFromTwitter(50, "cancer%20graviola");
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
                 }
-               //ajout du module à la fênetre
+                //crï¿½ation du module
+                TweetListModule tweetList = new TweetListModule();
+                //remplissage avec les tweets tï¿½lï¿½chargï¿½s
+                for (int i = alt.size() - 1; i >= 0; i--) {
+                    tweetList.AddTweet(alt.get(i));
+                }
+                //ajout du module ï¿½ la fï¿½netre
                 frame.getContentPane().add(tweetList);
                 frame.pack();
-                //centrage de la fenêtre
+                //centrage de la fenï¿½tre
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
             }
