@@ -28,6 +28,8 @@ import java.util.regex.*;
 
 public class Keywords extends JFrame {
 
+	private static ArrayList<String> stopwords = null;
+
 	public static void main(String[] args) {
 		Map<String, Integer> mamap = new LinkedHashMap<>();
 			mamap=PrintWords();
@@ -92,13 +94,15 @@ public class Keywords extends JFrame {
 	}
 
 	
-	private static ArrayList<String> GetStopWords ()
+	public static ArrayList<String> GetStopWords()
 		{
+			if(stopwords!=null) return stopwords;
+
 			FileReader monFichier = null;
 			BufferedReader tampon = null;
-			
-			ArrayList <String> stopwords=new ArrayList <String> ();
-		
+
+			stopwords = new ArrayList<String>();
+
 			try {
 				monFichier = new FileReader("./config/StopWords.csv");	// Tu n'a qu'a changer le chemin du fichier csv contenant les tweets
 				tampon = new BufferedReader(monFichier);
@@ -135,7 +139,7 @@ public class Keywords extends JFrame {
 	 * @param words : la liste de mot en entrée
 	 * @return
 	 */
-	private static ArrayList<String> FilterStopWords(ArrayList<String> words,ArrayList<String> stopwords ){
+	public static ArrayList<String> FilterStopWords(ArrayList<String> words,ArrayList<String> stopwords ){
 		
 		ArrayList<String> result = new ArrayList<String>();
 			//byte temp;	

@@ -76,17 +76,7 @@ public class Mongo {
 
         if (host.isEmpty()) host = "localhost";
         if (port == 0) port = 27017;
-    /*
-        List<ServerAddress> serverAddresses = new ArrayList<ServerAddress>();
-        ServerAddress address = new ServerAddress(host, port);
-        serverAddresses.add(address);
-		
-		List<MongoCredential> credentials = new ArrayList<MongoCredential>();
-	  //  MongoCredential credential = MongoCredential.createPlainCredential(user, "$external", password);
-	    MongoCredential credential = MongoCredential.createMongoCRCredential(user, nomBase, password);
-	    credentials.add(credential);
-	    MongoClient mongoClient = new MongoClient(serverAddresses, credentials);
-	*/
+
         MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://" + user + ":" + pass + "@" + host + ":" + port + "/" + nomBase));
 
         MongoDatabase maBase = mongoClient.getDatabase(nomBase);
@@ -115,7 +105,7 @@ public class Mongo {
             doc.append("nbResponses", t.getNbResponses());
             doc.append("nbRetweets", t.getNbRetweets());
             doc.append("nbLikes", t.getNbLikes());
-            //System.out.println(doc);
+
             twitter.insertOne(doc);
         }
         System.out.println("Insertion ok !");
@@ -131,7 +121,6 @@ public class Mongo {
 
     /**
      * [NE PAS UTILISER] Retourne TOUS les Tweets de la base de donnée
-     *
      * @return tous les Tweets de la collection dans une ArrayList de type Tweet
      */
     public ArrayList<Tweet> GetAllTweets() {
@@ -153,7 +142,7 @@ public class Mongo {
     }
 
     /**
-     * renvoie toutes les dates en timestamp (pour l'instant ?)
+     * renvoie toutes les dates en timestamp
      *
      * @return une liste de Documents, avec pour champ "date", en timestamp
      */

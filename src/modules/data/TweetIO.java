@@ -1,12 +1,9 @@
 package modules.data;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 
-public class TweetExport {
+public class TweetIO {
     private final static String CSV_SEPARATOR = "\t";
 
 
@@ -36,5 +33,28 @@ public class TweetExport {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void readFromCSV(){
+        String csvFile = "/Users/mkyong/csv/country.csv";
+        String line = "";
+        String cvsSplitBy = ",";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                String[] country = line.split(cvsSplitBy);
+
+                System.out.println("Country [code= " + country[4] + " , name=" + country[5] + "]");
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -235,7 +235,7 @@ public class TwitterSearch {
         System.out.println("Found " + myList.size() + " tweets.");
         System.out.println("Saving into " + path + "...");
         // when it's done, we write the list of tweets in a CSV file
-        TweetExport.writeToCSV(myList, path);
+        TweetIO.writeToCSV(myList, path);
         System.out.println("Done. !");
         System.out.println("==============================================");
 
