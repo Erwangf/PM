@@ -20,12 +20,12 @@ public class Mongo {
 
     public final int pageSize = 100;
 
-    private final String defaultHost = "ds147537.mlab.com";
-    private final int defaultPort = 47537;
-    private final String defaultBase = "twitter_rumors";
-    private final String defaultCollection = "Twitter";
-    private final String defaultUser = "root";
-    private final String defaultPassword = "TwitterMongo2016";
+    public final String defaultHost = "ds147537.mlab.com";
+    public final int defaultPort = 47537;
+    public final String defaultBase = "twitter_rumors";
+    public final String defaultCollection = "Twitter";
+    public final String defaultUser = "root";
+    public final String defaultPassword = "TwitterMongo2016";
 
 
     private MongoCollection<Document> twitter;
