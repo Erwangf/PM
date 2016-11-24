@@ -20,6 +20,7 @@ import javax.swing.JTable;
 
 import org.json.JSONException;
 
+import modules.data.Mongo;
 import modules.data.Tweet;
 import modules.data.TwitterSearch;
 //import testJFreeChart.Mongo;
@@ -27,29 +28,42 @@ import modules.data.TwitterSearch;
 import java.util.regex.*;
 
 public class Keywords extends JFrame {
+	
+	private Mongo base;
 
 	public static void main(String[] args) {
-		Map<String, Integer> mamap = new LinkedHashMap<>();
-			mamap=PrintWords();
-		new Keywords(mamap).setVisible(true);
-// Java UTF8 To ANSI
+		Mongo testbase = new Mongo();
+		Keywords kw = new Keywords();
+		kw.setBase(testbase);
+		kw.initialize();
+		kw.setVisible(true);
 	}
 	
-	public static Map<String, Integer> PrintWords(){
+	public Map<String, Integer> PrintWords(){
 		Map<String, Integer> countsorted= new LinkedHashMap<>();
 		//try {
-			//création de l'instance mongo
-			modules.data.Mongo base = new modules.data.Mongo();
+
 			
-			//connexion à la base distante
+			//connexion ï¿½ la base distante
 			base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
 			
 			
-			//ArrayList<Tweet> al = TwitterSearch.getTweetsFromTwitter(100, "cancer%20graviola");  
+		
 			ArrayList<Tweet> al = base.GetTweetsBlocks(1);  
-			for (int i=2;i<10;i++){
-				al.addAll(base.GetTweetsBlocks(i));
+			int i=100;
+			int j=2;
+			while(al.size()==i){
+				al.addAll(base.GetTweetsBlocks(j));
+				j++;
+				//i=i+base.GetTweetsBlocks(j).size();
+				i=i+100;
 			}
+			//System.out.println("Nombre de paquets : " + j);
+			
+			
+			/*for (int i=2;i<10;i++){
+				al.addAll(base.GetTweetsBlocks(i));
+			}*/
 			
 			ArrayList<String> words = WordExtractor(al);
 			ArrayList<String> stopWords=GetStopWords ();
@@ -83,7 +97,7 @@ public class Keywords extends JFrame {
 		for (Tweet t : tweets)
 		{
 
-				content=t.getContent().replaceAll( "\\s\\p{Punct}|[,.#@>:;/!»*«¿'?)]", "");  //[\\s\\p{Punct}]     \\p{Punct}[^#@'&¿]
+				content=t.getContent().replaceAll( "\\s\\p{Punct}|[,.#@>:+;/_!*Â¿'?)]", "");  //[\\s\\p{Punct}]     \\p{Punct}[^#@'&ï¿½]
 				content=content.toUpperCase();
 				String[] mywords = content.split(" ");	
 				words.addAll(new ArrayList(Arrays.asList(mywords)));
@@ -110,7 +124,7 @@ public class Keywords extends JFrame {
 					// Lit une ligne de test.csv (ligne == null) break;
 					stopwords.add(ligne.toUpperCase());
 
-					// Vérifie la fin de fichier
+					// Vï¿½rifie la fin de fichier
 					
 					//System.out.println("\n"+ligne);
 					ligne = tampon.readLine();
@@ -129,10 +143,10 @@ public class Keywords extends JFrame {
 }
 	
 	/**
-	 * En entrée une liste de mots
-	 * en sortie une liste de mots filtrés (no stopwords)
+	 * En entrï¿½e une liste de mots
+	 * en sortie une liste de mots filtrï¿½s (no stopwords)
 	 * 
-	 * @param words : la liste de mot en entrée
+	 * @param words : la liste de mot en entrï¿½e
 	 * @return
 	 */
 	private static ArrayList<String> FilterStopWords(ArrayList<String> words,ArrayList<String> stopwords ){
@@ -143,12 +157,18 @@ public class Keywords extends JFrame {
 		{
 			try{
 			byte[] bytes=w.getBytes("ISO8859_15");
-			String t = new String( bytes , "Cp1252" );   //Cp1252
-			t=t.replaceAll( "Â", "A");
-			t=t.replaceAll( "Á", "A");
-			t=t.replaceAll( "Í", "I");
+			String t = new String( bytes , "cp1252" );
+			t=t.replaceAll( "Ãƒ", "A");
+			t=t.replaceAll( "Ã‚", "A");
+			t=t.replaceAll( "Ã", "A");
+			t=t.replaceAll( "Ã", "I");
 			t=t.replaceAll( "//?", "");
-			t=t.replaceAll( "Ó", "O");
+			t=t.replaceAll( "Ã“", "O");
+			t=t.replaceAll( "Ã”", "O");
+			t=t.replaceAll( "ÃŠ", "E");
+			t=t.replaceAll( "Ãˆ", "E");   
+			t=t.replaceAll( "Ãš", "E");
+			//t=t.replaceAll( "//"", "");
 			
 			if (! stopwords.contains(w) && w.length()>1)
 				{
@@ -235,9 +255,11 @@ public class Keywords extends JFrame {
 	
 	 
 	 private static void afficherMap(Map<String, Integer> Map){
-		 
+		 int kount=0;
 		 for (Map.Entry<String, Integer> entry : Map.entrySet()) {
-			System.out.println("Mot : " + entry.getKey() + " Count : " + entry.getValue());
+			 kount++;
+			System.out.println("Mot : " + entry.getKey() + " Count : " + entry.getValue() + "   (" +kount+")");
+			if (kount==300) break;
 		}
 		 
 	 }
@@ -246,59 +268,46 @@ public class Keywords extends JFrame {
 //****************** INTERFACE ********************************************
 	 
 
-		    public Keywords(Map<String, Integer> Map) {  // parametre (Map<String, Integer> Map)
-		        super();
+	public Keywords(){
+		super();
+	}
+	
+	public void setBase(Mongo m){
+		this.base = m;
+	}
+	public void initialize(){
+		
+
+		Map<String,Integer> myMap = new LinkedHashMap<>();
+		myMap = PrintWords();
 		 
-		        setTitle("Nombre d'occurences pour chaque mot");
-		        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		        
-		        
-		        /*for (Map.Entry<String, Integer> entry : Map.entrySet()) {
-					//System.out.println("Mot : " + entry.getKey() + " Count : " + entry.getValue());
-		        	String [][] donnees= { entry.getKey(),(String[])  entry.getValue()};
-		        	
-				}*/
-		        
-		       
-		        int i=0;
-		        int intermediaire;
-		        Object[][] donneees = new Object [25][2] ;
-		        //for (int i=0;i<20;i++){
-	        	  for (Map.Entry<String, Integer> entry : Map.entrySet()) {
-						//System.out.println("Mot : " + entry.getKey() + " Count : " + entry.getValue());
-			        	//String [i][1] donneees= { entry.getKey(),  entry.getValue()};
-	        		   donneees [i][0] = entry.getKey();
-	        		   //intermediaire= entry.getValue();
-	        		   //intermediaire=intermediaire;  // Il faut a tout prix caster cette variable en String
-	        		   donneees [i][1] = entry.getValue();
-	        		   i++;
-	        		   if (i==25){
-	        			   break;
-	        		   }
-					}
-		       // }
-		 
-		        /*Object[][] donnees = 
-		        {
-		                {"graviola", 77},
-		                {"cancer", 66},
-		                {"medicament", 55},
-		                {"mort", 44},
-		                {"guerison", 33},
-		                
-		        };*/
-		 
-		        String[] entetes = {"Mots", "Nombre d'occurences"};
-		 
-		        JTable tableau = new JTable(donneees, entetes);
-		 
-		        //getContentPane().add(tableau.getTableHeader(), BorderLayout.NORTH);
-		        //getContentPane().add(tableau, BorderLayout.CENTER);
-		        
-		        getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
-		 
-		        pack();
-		    }	 
+        setTitle("Nombre d'occurences pour chaque mot");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        int i=0;
+        int intermediaire;
+        Object[][] donneees = new Object [25][2] ;
+
+    	  for (Map.Entry<String, Integer> entry : myMap.entrySet()) {
+				
+    		   donneees [i][0] = entry.getKey();
+      		   donneees [i][1] = entry.getValue();
+    		   i++;
+    		   if (i==25){
+    			   break;
+    		   }
+			}
+ 
+        String[] entetes = {"Mots", "Nombre d'occurences"};
+ 
+        JTable tableau = new JTable(donneees, entetes);
+        
+        
+        getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
+ 
+        pack();
+		
+	}
 }
 
 
