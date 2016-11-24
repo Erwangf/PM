@@ -20,10 +20,25 @@ public class Mongo {
 
     public final int pageSize = 100;
 
+    private final String defaultHost = "ds147537.mlab.com";
+    private final int defaultPort = 47537;
+    private final String defaultBase = "twitter_rumors";
+    private final String defaultCollection = "Twitter";
+    private final String defaultUser = "root";
+    private final String defaultPassword = "TwitterMongo2016";
+
+
     private MongoCollection<Document> twitter;
 
     public Mongo() {
         super();
+    }
+
+    /**
+     * Connexion à la base de donnée par défaut.
+     */
+    public void ConnexionMongoDefault(){
+        ConnexionMongo(defaultHost,defaultPort,defaultBase,defaultCollection,defaultUser,defaultPassword);
     }
 
     /**
@@ -48,7 +63,7 @@ public class Mongo {
     }
 
     /**
-     * Connexion locale à une base de donnée, AVEC identification.
+     * Connexion à une base de donnée, AVEC identification.
      *
      * @param host          L'adresse du serveur MongoDB
      * @param port          Le port du serveur MongoDB
