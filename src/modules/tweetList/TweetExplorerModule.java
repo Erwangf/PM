@@ -61,7 +61,7 @@ public class TweetExplorerModule extends JPanel {
         base.GetTweetsBlocks(nbPages).forEach(tlm::AddTweet);
     }
 
-    public void launchSearch(){
+    private void launchSearch(){
         String[] keywords = searchArea.getText().split(" ");
         if(keywords.length!=0){
             tlm.RemoveAllTweet();
