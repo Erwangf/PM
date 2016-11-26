@@ -28,8 +28,14 @@ import modules.data.TwitterSearch;
 import java.util.regex.*;
 
 public class Keywords extends JFrame {
-	
-	private Mongo base;
+
+
+    private Mongo base;
+
+    public void setMonboBase(Mongo b){
+    	this.base = b;
+    }
+
 
 	private static ArrayList<String> stopwords = null;
 
@@ -50,7 +56,7 @@ public class Keywords extends JFrame {
 			base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
 			
 			
-		
+
 			ArrayList<Tweet> al = base.GetTweetsBlocks(1);  
 			int i=100;
 			int j=2;
@@ -61,8 +67,8 @@ public class Keywords extends JFrame {
 				i=i+100;
 			}
 			//System.out.println("Nombre de paquets : " + j);
-			
-			
+
+
 			/*for (int i=2;i<10;i++){
 				al.addAll(base.GetTweetsBlocks(i));
 			}*/
@@ -170,7 +176,7 @@ public class Keywords extends JFrame {
 			t=t.replaceAll( "Ó", "O");
 			t=t.replaceAll( "Ô", "O");
 			t=t.replaceAll( "Ê", "E");
-			t=t.replaceAll( "È", "E");   
+			t=t.replaceAll( "È", "E");
 			t=t.replaceAll( "Ú", "E");
 			//t=t.replaceAll( "//"", "");
 			
@@ -275,12 +281,12 @@ public class Keywords extends JFrame {
 	public Keywords(){
 		super();
 	}
-	
+
 	public void setBase(Mongo m){
 		this.base = m;
 	}
 	public void initialize(){
-		
+
 
 		Map<String,Integer> myMap = new LinkedHashMap<>();
 		myMap = PrintWords();
@@ -293,7 +299,7 @@ public class Keywords extends JFrame {
         Object[][] donneees = new Object [25][2] ;
 
     	  for (Map.Entry<String, Integer> entry : myMap.entrySet()) {
-				
+
     		   donneees [i][0] = entry.getKey();
       		   donneees [i][1] = entry.getValue();
     		   i++;
@@ -301,16 +307,16 @@ public class Keywords extends JFrame {
     			   break;
     		   }
 			}
- 
+
         String[] entetes = {"Mots", "Nombre d'occurences"};
- 
+
         JTable tableau = new JTable(donneees, entetes);
-        
-        
+
+
         getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
- 
+
         pack();
-		
+
 	}
 }
 
