@@ -77,11 +77,11 @@ public class Trend {
 			String date_cour, date_i;
 			
 			date_cour = formatdate.format(dates.get(0));
-			
+			date_cour=date_cour.substring(2, date_cour.length());  //2,6
 			DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
 			for (int i = 1; i < nbTweet; i++) {
 				date_i = formatdate.format(dates.get(i));
-				
+				date_i=date_i.substring(2, date_i.length());  //2,6
 				if (date_i.equals(date_cour)) {
 					cum++;
 				}
