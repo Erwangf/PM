@@ -1,32 +1,26 @@
 package modules.keywords;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-
 import modules.data.Mongo;
 import org.bson.Document;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
-//import org.jfree.data.time.Minute;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 import javax.swing.*;
+import java.awt.*;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+
+//import org.jfree.data.time.Minute;
 //import org.jfree.ui.Spacer;
 
 
@@ -50,7 +44,7 @@ public class Trend extends JFrame {
 
     }
 
-    public void initialize(){
+    public void initialize() {
 
         //Etape 1 : dataset
         //Appel de la fonction createDataset qui charge les données
@@ -61,7 +55,7 @@ public class Trend extends JFrame {
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
                 "Courbe de tendance",
                 "Date",
-                "Nombre de tweets par"+(mensuel?"mois":"jour"),
+                "Nombre de tweets par" + (mensuel ? "mois" : "jour"),
                 dataset,
                 false,
                 true,
@@ -104,14 +98,12 @@ public class Trend extends JFrame {
     private XYDataset createDataset(boolean mensuel) {
 
 
-
-
         //Reccuperation des dates et du nb de tweets
         ArrayList<Document> datesList = base.GetAllDates();
         int nbTweet = (int) base.GetNbTweets();
 
         //Création d'une collection de timestamp
-        ArrayList<Timestamp> dates = new ArrayList<Timestamp>();
+        ArrayList<Timestamp> dates = new ArrayList<>();
 
         //Conversion doc.dates => timestamp(milliseconde) => timestamp(seconde)
         Document doc;
@@ -137,16 +129,15 @@ public class Trend extends JFrame {
 
             //Creation et ajout des TimeSeries dans le dataset
             TimeSeriesCollection dataset = new TimeSeriesCollection();
-            dataset.setDomainIsPointsInTime(true);
             TimeSeries s = new TimeSeries("Tweets", Month.class);
 
             //initialisation du comptage
             int cum = 1;
             String date_cour, date_i;
-            int dateMonth = 0, dateYear = 0;
+
             //Reccuperation de la première date
-            dateMonth = Integer.parseInt(date_mois.format(dates.get(0)));
-            dateYear = Integer.parseInt(date_annee.format(dates.get(0)));
+            int dateMonth = Integer.parseInt(date_mois.format(dates.get(0)));
+            int dateYear = Integer.parseInt(date_annee.format(dates.get(0)));
             date_cour = formatdate2.format(dates.get(0));
             //Demarrage de la bouble for : pour chaque date,
             for (i = 1; i < nbTweet; i++) {
@@ -186,17 +177,16 @@ public class Trend extends JFrame {
 
             //Creation et ajout des TimeSeries dans le dataset
             TimeSeriesCollection dataset = new TimeSeriesCollection();
-            dataset.setDomainIsPointsInTime(true);
             TimeSeries s = new TimeSeries("Tweets", Day.class);
 
             //initialisation du comptage
             int cum = 1;
             String date_cour, date_i;
-            int dateDay = 0, dateMonth = 0, dateYear = 0;
+
             //Reccuperation de la première date
-            dateDay = Integer.parseInt(date_jour.format(dates.get(0)));
-            dateMonth = Integer.parseInt(date_mois.format(dates.get(0)));
-            dateYear = Integer.parseInt(date_annee.format(dates.get(0)));
+            int dateDay = Integer.parseInt(date_jour.format(dates.get(0)));
+            int dateMonth = Integer.parseInt(date_mois.format(dates.get(0)));
+            int dateYear = Integer.parseInt(date_annee.format(dates.get(0)));
             date_cour = formatdate.format(dates.get(0));
             //Demarrage de la bouble for : pour chaque date,
             for (i = 1; i < nbTweet; i++) {
