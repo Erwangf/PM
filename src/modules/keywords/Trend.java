@@ -73,7 +73,7 @@ public class Trend extends ApplicationFrame {
 
     public static void main(final String[] args) {
 
-	//Etape 4 : Affichage du graphique
+	//Etape 4 : Affichage du  graphique
 		Trend trend = new Trend("Tendance des tweets");
 		trend.pack();
         RefineryUtilities.centerFrameOnScreen(trend);
