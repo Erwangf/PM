@@ -39,8 +39,8 @@ public class TwitterSearch {
 		 * connection.getHeaderFields().forEach(( headerName, headerValue)->{ connection.setRequestProperty(headerName,null); });
 		 */
         connection.setRequestProperty("Accept-Charset", "utf-8");
-        connection.setRequestProperty("user-agent",
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36");
+        connection.setRequestProperty("User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         connection.setRequestProperty("x-overlay-request", "true");
 

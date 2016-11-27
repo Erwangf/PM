@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import modules.keywords.Keywords;
 import modules.tweetList.TweetExplorerModule;
 import org.json.JSONException;
 
@@ -66,12 +67,12 @@ public class MainFrame extends JFrame {
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(0, 2, 10, 10));
+		contentPane.setLayout(new GridLayout(2, 2, 10, 10));
 		
 		
 		// MongoDB Base
 		Mongo base = new Mongo();
-		base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
+		base.ConnexionMongoDefault();
 		
 		
 
@@ -80,12 +81,33 @@ public class MainFrame extends JFrame {
 		contentPane.add(tem);
 		tem.setBase(base);
 		tem.initialize();
-		
+
+		TweetExplorerModule tem2 = new TweetExplorerModule();
+		contentPane.add(tem2);
+		tem2.setBase(base);
+		tem2.initialize();
+
+		TweetExplorerModule tem3 = new TweetExplorerModule();
+		contentPane.add(tem3);
+		tem3.setBase(base);
+		tem3.initialize();
+
+		//Keywords module
+
+//		Keywords kw = new Keywords();
+//		kw.setBase(base);
+//		kw.initialize();
+//		contentPane.add(kw);
+
+		//Trends module
+
+
+
 		//Module Keyword
 		//Keywords kw = new Keywords();
 		//contentPane.add(kw);
 		//kw.setMonboBase(base);
-		
+
 		
 		
 		

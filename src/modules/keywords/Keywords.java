@@ -14,9 +14,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 
 import org.json.JSONException;
 
@@ -27,10 +25,9 @@ import modules.data.TwitterSearch;
 
 import java.util.regex.*;
 
-public class Keywords extends JFrame {
-
-
-    private Mongo base;
+public class Keywords extends JPanel {
+	
+	private Mongo base;
 
     public void setMonboBase(Mongo b){
     	this.base = b;
@@ -49,14 +46,10 @@ public class Keywords extends JFrame {
 	
 	public Map<String, Integer> PrintWords(){
 		Map<String, Integer> countsorted= new LinkedHashMap<>();
-		//try {
 
 			
-			//connexion � la base distante
-			base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
 			
-			
-
+		
 			ArrayList<Tweet> al = base.GetTweetsBlocks(1);  
 			int i=100;
 			int j=2;
@@ -67,8 +60,8 @@ public class Keywords extends JFrame {
 				i=i+100;
 			}
 			//System.out.println("Nombre de paquets : " + j);
-
-
+			
+			
 			/*for (int i=2;i<10;i++){
 				al.addAll(base.GetTweetsBlocks(i));
 			}*/
@@ -178,8 +171,7 @@ public class Keywords extends JFrame {
 			t=t.replaceAll( "Ê", "E");
 			t=t.replaceAll( "È", "E");
 			t=t.replaceAll( "Ú", "E");
-			//t=t.replaceAll( "//"", "");
-			
+
 			if (! stopwords.contains(w) && w.length()>1)
 				{
 					result.add(t);
@@ -217,13 +209,8 @@ public class Keywords extends JFrame {
 				result.replace(w, result.get(w)+1);
 			}
 		}
-		
-		
-		/*for (Map.Entry<String, Integer> entry : result.entrySet()) {
-			System.out.println("Mot : " + entry.getKey() + " Count : " + entry.getValue());
-		}*/	
-		
-		
+
+
 		return result;
 	}
 	
@@ -234,16 +221,11 @@ public class Keywords extends JFrame {
 
 	        // 1. Convert Map to List of Map
 	        List<Map.Entry<String, Integer>> list =
-	                new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+					new LinkedList<>(unsortMap.entrySet());
 
 	        // 2. Sort list with Collections.sort(), provide a custom Comparator
 	        //    Try switch the o1 o2 position for a different order
-	        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-	            public int compare(Map.Entry<String, Integer> o1,
-	                               Map.Entry<String, Integer> o2) {
-	                return (o2.getValue()).compareTo(o1.getValue());
-	            }
-	        });
+	        Collections.sort(list, (o1, o2) -> (o2.getValue()).compareTo(o1.getValue()));
 
 	        // 3. Loop the sorted list and put it into a new insertion order Map LinkedHashMap
 	        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
@@ -290,9 +272,6 @@ public class Keywords extends JFrame {
 
 		Map<String,Integer> myMap = new LinkedHashMap<>();
 		myMap = PrintWords();
-		 
-        setTitle("Nombre d'occurences pour chaque mot");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         int i=0;
         int intermediaire;
@@ -311,12 +290,11 @@ public class Keywords extends JFrame {
         String[] entetes = {"Mots", "Nombre d'occurences"};
 
         JTable tableau = new JTable(donneees, entetes);
+        
+		add(new JScrollPane(tableau), BorderLayout.CENTER);
 
 
-        getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
-
-        pack();
-
+		
 	}
 }
 

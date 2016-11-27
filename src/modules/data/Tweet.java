@@ -29,7 +29,7 @@ public class Tweet {
         this.tweetId = Long.toString(status.getId());
         this.username = status.getUser().getName();
         this.timeStamp = new Timestamp(status.getCreatedAt().getTime());
-        this.content = status.getText();
+        this.content = status.getText().replace("\"", "");
         this.nbResponses = 0;
         this.nbRetweets = status.getRetweetCount();
         this.nbLikes = status.getFavoriteCount();
@@ -42,7 +42,7 @@ public class Tweet {
         this.tweetId = tweetId;
         this.username = username;
         this.timeStamp = timeStamp;
-        this.content = content;
+        this.content = content.replace("\"", "");
         this.nbResponses = nbResponses;
         this.nbRetweets = nbRetweets;
         this.nbLikes = nbLikes;
@@ -59,7 +59,7 @@ public class Tweet {
         return "Tweet{" +
                 "user='" + user + '\'' +
                 ", username='" + username + '\'' +
-                ", timeStamp=" + timeStamp +
+                ", timeStamp=" + timeStamp.getTime() +
                 ", content='" + content + '\'' +
                 ", nbResponses=" + nbResponses +
                 ", nbRetweets=" + nbRetweets +
