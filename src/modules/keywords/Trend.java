@@ -32,6 +32,8 @@ import javax.swing.*;
 
 public class Trend extends JFrame {
 
+
+    private boolean mensuel;
     private Mongo base;
 
     public void setBase(Mongo base) {
@@ -43,6 +45,7 @@ public class Trend extends JFrame {
         //Etape 0 : constructeur (et déclarations)
 
         super(title);
+        mensuel = true;
 
 
     }
@@ -51,7 +54,6 @@ public class Trend extends JFrame {
 
         //Etape 1 : dataset
         //Appel de la fonction createDataset qui charge les données
-        boolean mensuel = true;
         XYDataset dataset = createDataset(mensuel);
 
 
@@ -59,7 +61,7 @@ public class Trend extends JFrame {
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
                 "Courbe de tendance",
                 "Date",
-                "Nombre de tweets par jour",
+                "Nombre de tweets par"+(mensuel?"mois":"jour"),
                 dataset,
                 false,
                 true,
