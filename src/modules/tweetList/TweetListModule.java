@@ -84,10 +84,9 @@ public class TweetListModule extends JPanel {
                 } catch (Exception ignored) {
                 }
 
-                //cr�ation d'une fen�tre pour afficher le module
                 JFrame frame = new JFrame("Test Tweet List");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                //R�cup�ration des tweets
+
                 ArrayList<Tweet> alt = new ArrayList<Tweet>();
                 try {
                     alt = TwitterSearch.getTweetsFromTwitter(50, "cancer%20graviola");

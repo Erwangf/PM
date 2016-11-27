@@ -24,7 +24,7 @@ import java.util.Collections;
 //import org.jfree.ui.Spacer;
 
 
-public class Trend extends JFrame {
+public class Trend extends JPanel {
 
 
     private boolean mensuel;
@@ -38,7 +38,7 @@ public class Trend extends JFrame {
 
         //Etape 0 : constructeur (et déclarations)
 
-        super(title);
+        super();
         mensuel = true;
 
 
@@ -76,21 +76,25 @@ public class Trend extends JFrame {
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
         chartPanel.setMouseZoomable(true, false);
-        setContentPane(chartPanel);
+        add(chartPanel);
 
     }
 
     public static void main(final String[] args) {
 
         //Etape 4 : Affichage du  graphique
+        JFrame frame = new JFrame("Test Tweet List");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         Trend trend = new Trend("Tendance des tweets");
         Mongo myBase = new Mongo();
         myBase.ConnexionMongoDefault();
         trend.setBase(myBase);
         trend.initialize();
-        trend.pack();
-        RefineryUtilities.centerFrameOnScreen(trend);
-        trend.setVisible(true);
+        frame.setContentPane(trend);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
 
     }
