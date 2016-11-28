@@ -23,7 +23,7 @@ import org.json.JSONException;
 import modules.data.Mongo;
 import modules.data.Tweet;
 import modules.data.TwitterSearch;
-//import testJFreeChart.Mongo;
+
 
 import java.util.regex.*;
 
@@ -50,6 +50,8 @@ public class Keywords extends JFrame {
 			
 		
 			ArrayList<Tweet> al = base.GetTweetsBlocks(1);  
+			
+			
 			int i=100;
 			int j=2;
 			while(al.size()==i){
