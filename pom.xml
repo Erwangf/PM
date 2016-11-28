@@ -19,13 +19,13 @@
         </plugins>
     </build>
     <dependencies>
-  
+
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20090211</version>
         </dependency>
-        
+
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -34,24 +34,31 @@
         </dependency>
         <!-- Twitter dependency : Twitter4J -->
         <dependency>
-           <groupId>org.twitter4j</groupId>
-           <artifactId>twitter4j-core</artifactId>
-           <version>[4.0,)</version>
-       </dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-core</artifactId>
+            <version>[4.0,)</version>
+        </dependency>
 
-		<dependency>
-    	    <groupId>org.mongodb</groupId>
-   	    	<artifactId>mongodb-driver</artifactId>
-    	    <version>3.3.0</version>
-    	</dependency>
-    	<dependency>
-    <groupId>jfree</groupId>
-    <artifactId>jfreechart</artifactId>
-    <version>1.0.9</version>
-</dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.1</version>
+        </dependency>
+
+
     </dependencies>
 
 
-    
     <groupId>PM</groupId>
 </project>

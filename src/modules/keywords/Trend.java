@@ -1,168 +1,226 @@
 package modules.keywords;
 
+import modules.data.Mongo;
+import org.bson.Document;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.Month;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.ui.RefineryUtilities;
+
+import javax.swing.*;
+import java.awt.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Collections;
 
-//import java.util.Collection;
-//import java.util.Iterator;
-//import java.util.List;
-//
-import org.bson.Document;
-import org.jfree.chart.ChartFrame;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
+//import org.jfree.data.time.Minute;
+//import org.jfree.ui.Spacer;
 
-import modules.data.Tweet;
 
-import org.jfree.chart.ChartFactory;
+public class Trend extends JPanel {
 
-public class Trend {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		//cr�ation de l'instance mongo
-		modules.data.Mongo base = new modules.data.Mongo();
-			
-			//connexion � la base distante
-			base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
-			
-			
-			
-			//System.out.println(base.GetAllDates());
-			//ArrayList<Document> datesList = new ArrayList<Document>();
-			//datesList = base.GetAllDates();
-			
-			
-			ArrayList<Document> datesList1= base.GetAllDates();  
-		
-			//nb de tweets
-			long nbTweet = base.GetNbTweets();
-			
-			System.out.println(nbTweet);
-			/*for (int i=2;i<10;i++){
-				datesList.addAll(base.GetAllDates());
-			}*/
-			
-			// Ici on tri la liste 
-			
-			ArrayList<Document> datesList = reverse (datesList1 );
-			
-//			for (int i = 0; i < 10; i++) {
-//				System.out.println(datesList.get(i));	
-//			}
-			
-			ArrayList<Timestamp> dates = new ArrayList<Timestamp>();
-			//ArrayList<String> dateString = new ArrayList<String>();
-			
-			Iterator<Document> iter = datesList.iterator();
-			while (iter.hasNext()) {
-				Document doc = iter.next();
-				//System.out.println(doc);
-				Timestamp nbs = new Timestamp(Long.parseLong(doc.get("date").toString())*1000);
-				
-				dates.add(nbs);
-				
-				
-				
-			}
-			SimpleDateFormat formatdate = new SimpleDateFormat("dd/MM/yyyy");
-			
-			int cum=1;
-			String date_cour, date_i;
-			
-			date_cour = formatdate.format(dates.get(0));
-			date_cour=date_cour.substring(2, date_cour.length());  //2,6
-			DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-			for (int i = 1; i < nbTweet; i++) {
-				date_i = formatdate.format(dates.get(i));
-				date_i=date_i.substring(2, date_i.length());  //2,6
-				if (date_i.equals(date_cour)) {
-					cum++;
-				}
-				else {
-					dataset.addValue(cum,"Tweet",date_cour);
-					date_cour=date_i;
-					cum=1;
-				}
-				
-				
-				
-				// dataset.addValue( v, "date_tweet", string);
-				//System.out.println(i+ " :  "+string);	
-			}
-			dataset.addValue(cum,"Tweet",date_cour);
-			
-			
-			
-			// Il faut trier les dates dans l'ordre croissant
-			
-			
-			
-			// Puis les afficher grace sur le graphique
-			
-			
-	 
-		//create a chart...
-		      JFreeChart lineChart = ChartFactory.createLineChart(
-		 	         "Courbe de tendance", //titre
-		 	         "Ann�e",	//Titre de l'axe vertical X
-		 	         "Nombre de Tweets",   //Titre de l'axe vertical Y
-		 	         dataset,	//donnees
-		 	         PlotOrientation.VERTICAL,	//Orientation
-		 	         true,		//L�gende
-		 	         true,		//tooltips
-		 	         true		//urls
-		 	         );
-	 
-		//Affichage du graphique...
-		ChartFrame chart=new ChartFrame("Tendance", lineChart);
-		chart.pack();
-		chart.setVisible(true);
-		
-			
-			
-			
-		}
+    private boolean mensuel;
+    private Mongo base;
 
-	static ArrayList<Document> reverse(ArrayList<Document> liste)
-    {
-		ArrayList<Document> result = new ArrayList<Document>();
-	for(int i=liste.size()-1; i>=0; i--)
-	    result.add(liste.get(i));
-	return result;
+    public void setBase(Mongo base) {
+        this.base = base;
     }
-	
-	
-private static Map<Document,Integer> WordCount(ArrayList<Document> words){
-		
-		TreeMap<Document, Integer> result = new TreeMap<>();
-		
-		for (Document w : words)
-		{
-			if (! result.containsKey(w))
-			{
-				result.put(w, 1);
-			}else{
-				result.replace(w, result.get(w)+1);
-			}
-		}
-		
-		
-		/*for (Map.Entry<String, Integer> entry : result.entrySet()) {
-			System.out.println("Mot : " + entry.getKey() + " Count : " + entry.getValue());
-		}*/	
-		
-		
-		return result;
-	}
-	
-	
-	}
+
+    public Trend(final String title) {
+
+        //Etape 0 : constructeur (et déclarations)
+
+        super();
+        mensuel = true;
 
 
+    }
+
+    public void initialize() {
+
+        //Etape 1 : dataset
+        //Appel de la fonction createDataset qui charge les données
+        XYDataset dataset = createDataset(mensuel);
+
+
+        // Etape 2 : Creer le graphique
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(
+                "Courbe de tendance",
+                "Date",
+                "Nombre de tweets par" + (mensuel ? "mois" : "jour"),
+                dataset,
+                false,
+                true,
+                false
+        );
+
+        //Paramretres
+        chart.setBackgroundPaint(Color.white); //couleur de fond
+        final XYPlot plot = chart.getXYPlot();
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+        //  final DateAxis axis = (DateAxis) plot.getDomainAxis();
+        //  axis.setDateFormatOverride(new SimpleDateFormat("M/yy"));
+
+
+        //Etape 3 : Préparation de la fenetre
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+        chartPanel.setMouseZoomable(true, false);
+        add(chartPanel);
+
+    }
+
+    public static void main(final String[] args) {
+
+        //Etape 4 : Affichage du  graphique
+        JFrame frame = new JFrame("Test Tweet List");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Trend trend = new Trend("Tendance des tweets");
+        Mongo myBase = new Mongo();
+        myBase.ConnexionMongoDefault();
+        trend.setBase(myBase);
+        trend.initialize();
+        frame.setContentPane(trend);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+
+    }
+
+    private XYDataset createDataset(boolean mensuel) {
+
+
+        //Reccuperation des dates et du nb de tweets
+        ArrayList<Document> datesList = base.GetAllDates();
+        int nbTweet = (int) base.GetNbTweets();
+
+        //Création d'une collection de timestamp
+        ArrayList<Timestamp> dates = new ArrayList<>();
+
+        //Conversion doc.dates => timestamp(milliseconde) => timestamp(seconde)
+        Document doc;
+        Timestamp nbs;
+        int i;
+        for (i = nbTweet - 1; i >= 0; i--) {
+            doc = datesList.get(i);
+            nbs = new Timestamp(Long.parseLong(doc.get("date").toString()) * 1000);
+            dates.add(nbs);
+        }
+        //Tri de l'arraylist pour avoir les dates dans l'ordre
+        Collections.sort(dates);
+
+//Comptage par mois
+        if (mensuel) {
+
+            //Création d'un format pour les date (dd/mm/yyyy)
+            SimpleDateFormat formatdate2 = new SimpleDateFormat("MM/yyyy");
+
+            //Partage des différents formats de la date
+            SimpleDateFormat date_mois = new SimpleDateFormat("MM");
+            SimpleDateFormat date_annee = new SimpleDateFormat("yyyy");
+
+            //Creation et ajout des TimeSeries dans le dataset
+            TimeSeriesCollection dataset = new TimeSeriesCollection();
+            TimeSeries s = new TimeSeries("Tweets", Month.class);
+
+            //initialisation du comptage
+            int cum = 1;
+            String date_cour, date_i;
+
+            //Reccuperation de la première date
+            int dateMonth = Integer.parseInt(date_mois.format(dates.get(0)));
+            int dateYear = Integer.parseInt(date_annee.format(dates.get(0)));
+            date_cour = formatdate2.format(dates.get(0));
+            //Demarrage de la bouble for : pour chaque date,
+            for (i = 1; i < nbTweet; i++) {
+                //Enregistrement de la date i
+                date_i = formatdate2.format(dates.get(i));
+                //Si date i est égale à la date précédente (courante), on incrémente le comptage de 1
+                if (date_i.equals(date_cour)) {
+                    cum++;
+                }
+                // sinon on ajoute la date courante dans la serie, et on enregistre la date i en date courante
+                else {
+                    s.add(new Month(dateMonth, dateYear), cum);
+                    dateMonth = Integer.parseInt(date_mois.format(dates.get(i)));
+                    dateYear = Integer.parseInt(date_annee.format(dates.get(i)));
+                    date_cour = date_i;
+                    cum = 1;
+                }
+            }
+            //Fin de la boucle, on ajoute la dernière date à la serie
+            s.add(new Month(dateMonth, dateYear), cum);
+
+            //Ajout de la serie au dataset
+            dataset.addSeries(s);
+
+            //On retourne le dataset
+            return dataset;
+
+        } else {
+//Comptage par jour
+            //Création d'un format pour les date (dd/mm/yyyy)
+            SimpleDateFormat formatdate = new SimpleDateFormat("dd/MM/yyyy");
+
+            //Partage des différents formats de la date
+            SimpleDateFormat date_jour = new SimpleDateFormat("dd");
+            SimpleDateFormat date_mois = new SimpleDateFormat("MM");
+            SimpleDateFormat date_annee = new SimpleDateFormat("yyyy");
+
+            //Creation et ajout des TimeSeries dans le dataset
+            TimeSeriesCollection dataset = new TimeSeriesCollection();
+            TimeSeries s = new TimeSeries("Tweets", Day.class);
+
+            //initialisation du comptage
+            int cum = 1;
+            String date_cour, date_i;
+
+            //Reccuperation de la première date
+            int dateDay = Integer.parseInt(date_jour.format(dates.get(0)));
+            int dateMonth = Integer.parseInt(date_mois.format(dates.get(0)));
+            int dateYear = Integer.parseInt(date_annee.format(dates.get(0)));
+            date_cour = formatdate.format(dates.get(0));
+            //Demarrage de la bouble for : pour chaque date,
+            for (i = 1; i < nbTweet; i++) {
+                //Enregistrement de la date i
+                date_i = formatdate.format(dates.get(i));
+                //Si date i est égale à la date précédente (courante), on incrémente le comptage de 1
+                if (date_i.equals(date_cour)) {
+                    cum++;
+                }
+                // sinon on ajoute la date courante dans la serie, et on enregistre la date i en date courante
+                else {
+                    s.add(new Day(dateDay, dateMonth, dateYear), cum);
+                    dateDay = Integer.parseInt(date_jour.format(dates.get(i)));
+                    dateMonth = Integer.parseInt(date_mois.format(dates.get(i)));
+                    dateYear = Integer.parseInt(date_annee.format(dates.get(i)));
+                    date_cour = date_i;
+                    cum = 1;
+                }
+            }
+            //Fin de la boucle, on ajoute la dernière date à la serie
+            s.add(new Day(dateDay, dateMonth, dateYear), cum);
+
+            //Ajout de la serie au dataset
+            dataset.addSeries(s);
+
+            //On retourne le dataset
+            return dataset;
+
+        }
+
+    }
+
+}

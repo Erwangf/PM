@@ -12,7 +12,7 @@ public class TestMongo {
 	public static void main(String[] args) throws IOException, JSONException {
 		if (args.length != 3) {
 			System.out.println(
-					"Erreur, arguments incorrects.\nUsage : TwitterSearch critères nombre_de_tweets chemin_du_fichier_csv");
+					"Erreur, arguments incorrects.\nUsage : TwitterSearch critï¿½res nombre_de_tweets chemin_du_fichier_csv");
 			System.out.println("Exemple :\nTwitterSearch \"cancer graviola\" 100 mytweets.csv");
 			return;
 		}
@@ -28,13 +28,13 @@ public class TestMongo {
 		System.out.println("Found " + myList.size() + " tweets.");
 		
 		
-		//création de l'instance mongo
+		//crï¿½ation de l'instance mongo
 		Mongo base = new Mongo();
 	//	base.ConnexionMongo("localhost",0,"BaseTest", "Twitter");
-		//connexion à la base distante
+		//connexion ï¿½ la base distante
 		base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
 		
-		//Insertion de la liste de Tweets récupérés précédemment
+		//Insertion de la liste de Tweets rï¿½cupï¿½rï¿½s prï¿½cï¿½demment
 		base.InsertMongo(myList);
 //		System.out.println(base.GetNbTweets());
 //		

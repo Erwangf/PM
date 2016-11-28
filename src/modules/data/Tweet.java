@@ -1,8 +1,8 @@
 package modules.data;
+
 import java.sql.Timestamp;
+
 import twitter4j.Status;
-
-
 
 
 public class Tweet {
@@ -16,6 +16,7 @@ public class Tweet {
     private int nbLikes;
     private String originalTweetd;
     private String inReplyToTweetId;
+    private float note;
 
 
     /*================================================================================================*/
@@ -23,30 +24,31 @@ public class Tweet {
     /*================================================================================================*/
 
 
-    public Tweet(Status status){
-    	this.user = status.getUser().getScreenName();
-		this.tweetId = Long.toString(status.getId());
-		this.username = status.getUser().getName();
-		this.timeStamp = new Timestamp(status.getCreatedAt().getTime());
-		this.content = status.getText();
-		this.nbResponses = 0;
-		this.nbRetweets = status.getRetweetCount();
-		this.nbLikes = status.getFavoriteCount();
+    public Tweet(Status status) {
+        this.user = status.getUser().getScreenName();
+        this.tweetId = Long.toString(status.getId());
+        this.username = status.getUser().getName();
+        this.timeStamp = new Timestamp(status.getCreatedAt().getTime());
+        this.content = status.getText().replace("\"", "");
+        this.nbResponses = 0;
+        this.nbRetweets = status.getRetweetCount();
+        this.nbLikes = status.getFavoriteCount();
     }
-	public Tweet(String user, String tweetId, String username, Timestamp timeStamp, String content, int nbResponses,
-			int nbRetweets, int nbLikes) {
-		super();
-		this.user = user;
-		this.tweetId = tweetId;
-		this.username = username;
-		this.timeStamp = timeStamp;
-		this.content = content;
-		this.nbResponses = nbResponses;
-		this.nbRetweets = nbRetweets;
-		this.nbLikes = nbLikes;
-		
-	}
-	
+
+    public Tweet(String user, String tweetId, String username, Timestamp timeStamp, String content, int nbResponses,
+                 int nbRetweets, int nbLikes) {
+        super();
+        this.user = user;
+        this.tweetId = tweetId;
+        this.username = username;
+        this.timeStamp = timeStamp;
+        this.content = content.replace("\"", "");
+        this.nbResponses = nbResponses;
+        this.nbRetweets = nbRetweets;
+        this.nbLikes = nbLikes;
+
+    }
+
     /*================================================================================================*/
     //            FUNCTIONS & METHODS
     /*================================================================================================*/
@@ -57,7 +59,7 @@ public class Tweet {
         return "Tweet{" +
                 "user='" + user + '\'' +
                 ", username='" + username + '\'' +
-                ", timeStamp=" + timeStamp +
+                ", timeStamp=" + timeStamp.getTime() +
                 ", content='" + content + '\'' +
                 ", nbResponses=" + nbResponses +
                 ", nbRetweets=" + nbRetweets +
@@ -81,13 +83,13 @@ public class Tweet {
     }
 
     public String getTweetId() {
-		return tweetId;
-	}
+        return tweetId;
+    }
 
-	public void setTweetId(String tweetId) {
-		this.tweetId = tweetId;
-	}
-	
+    public void setTweetId(String tweetId) {
+        this.tweetId = tweetId;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -135,17 +137,28 @@ public class Tweet {
     public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
-	public String getOriginalTweetd() {
-		return originalTweetd;
-	}
-	public void setOriginalTweetd(String originalTweetd) {
-		this.originalTweetd = originalTweetd;
-	}
-	public String getInReplyToTweetId() {
-		return inReplyToTweetId;
-	}
-	public void setInReplyToTweetId(String inReplyToTweetId) {
-		this.inReplyToTweetId = inReplyToTweetId;
-	}
 
+    public String getOriginalTweetd() {
+        return originalTweetd;
+    }
+
+    public void setOriginalTweetd(String originalTweetd) {
+        this.originalTweetd = originalTweetd;
+    }
+
+    public String getInReplyToTweetId() {
+        return inReplyToTweetId;
+    }
+
+    public void setInReplyToTweetId(String inReplyToTweetId) {
+        this.inReplyToTweetId = inReplyToTweetId;
+    }
+
+    public float getNote() {
+        return note;
+    }
+
+    public void setNote(float note) {
+        this.note = note;
+    }
 }
