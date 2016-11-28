@@ -14,6 +14,7 @@ import modules.data.Tweet;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
@@ -40,6 +41,7 @@ public class Interface_data extends JFrame {
 				try {
 					
 					Interface_data frame = new Interface_data();
+					frame.setLocationRelativeTo(null);
 					frame.setTitle("DATA");
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -138,9 +140,12 @@ public class Interface_data extends JFrame {
 
 							i=i+100;
 						} 		
-				
-				BufferedWriter tampon = new BufferedWriter(new FileWriter("C:/Users/hamza/Desktop/MonFichier_exp2.csv"));
+						System.out.println("1");
+				String pathname = SaveFile();
+				System.out.println(pathname);
+				BufferedWriter tampon = new BufferedWriter(new FileWriter(pathname));
 				PrintWriter sortie = new PrintWriter(tampon);
+				System.out.println("2");
 				for (Tweet v : tweets){
 				
 				          sortie.println(v);
@@ -218,4 +223,20 @@ public class Interface_data extends JFrame {
 		
 		
 	}
+	
+	public String SaveFile(){
+		
+		String pathname, path="", name="";
+	    JFileChooser chooser = new JFileChooser();
+	    chooser.setFileFilter(null);
+	    int returnVal = chooser.showSaveDialog(null);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	       name = chooser.getSelectedFile().getName();
+		   path = chooser.getSelectedFile().getParent();
+	    }   
+	    if(name.substring(name.length()-4,name.length())!=".csv"){name = name + ".csv";}
+	    pathname = path + "/" + name;
+	    return pathname;
+	}
+	
 }
