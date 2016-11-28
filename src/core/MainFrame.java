@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import modules.keywords.Interface_data;
 import modules.keywords.Keywords;
 import modules.keywords.Trend;
 import modules.tweetList.TweetExplorerModule;
@@ -97,6 +98,13 @@ public class MainFrame extends JFrame {
 		tr.setBase(base);
 		contentPane.add(tr);
 		this.setVisible(true);
+
+
+		//Data module
+
+        Interface_data intD = new Interface_data();
+        intD.setBase(base);
+        contentPane.add(intD);
 
 
 

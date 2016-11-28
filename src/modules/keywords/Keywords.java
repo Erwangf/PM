@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import org.json.JSONException;
 
@@ -272,8 +273,7 @@ public class Keywords extends JPanel {
 	public void initialize(){
 
 
-		Map<String,Integer> myMap = new LinkedHashMap<>();
-		myMap = PrintWords();
+		Map<String,Integer> myMap = PrintWords();
 
         int i=0;
         int intermediaire;
@@ -292,6 +292,16 @@ public class Keywords extends JPanel {
         String[] entetes = {"Mots", "Nombre d'occurences"};
 
         JTable tableau = new JTable(donneees, entetes);
+		DefaultTableModel tableModel = new DefaultTableModel(donneees, entetes) {
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				//all cells false
+				return false;
+			}
+		};
+
+		tableau.setModel(tableModel);
         
 		add(new JScrollPane(tableau), BorderLayout.CENTER);
 

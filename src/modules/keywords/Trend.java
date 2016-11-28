@@ -39,7 +39,7 @@ public class Trend extends JPanel {
         //Etape 0 : constructeur (et déclarations)
 
         super();
-        mensuel = false;
+        mensuel = true;
 
 
     }
