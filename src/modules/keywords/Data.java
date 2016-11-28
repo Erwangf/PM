@@ -18,6 +18,7 @@ import org.bson.Document;
 import org.json.JSONException;
 
 import modules.data.Tweet;
+import modules.data.TweetIO;
 
 public class Data extends JFrame implements ActionListener{
 
@@ -109,9 +110,9 @@ public class Data extends JFrame implements ActionListener{
 				i=i+100;
 			} 
 		
-		modules.data.TweetExport ex =new modules.data.TweetExport();
+		
 		//ArrayList<Tweet> tn =new ArrayList<Tweet>();
-		ex.writeToCSV(tweets, "C:/Users/hamza/Desktop/MonFichier.csv");
+		TweetIO.writeToCSV(tweets, "C:/Users/hamza/Desktop/MonFichier.csv");
 		System.out.println("FIN");
 	}
 	
