@@ -240,13 +240,14 @@ public class Mongo {
     }
 
 
+
     /**
      * Document to Tweet converter
      * @param doc the document to convert
      * @return a tweet
      */
     private Tweet DocToTweet(Document doc) {
-        return new Tweet(
+        Tweet t = new Tweet(
                 doc.get("user").toString(),
                 doc.get("TweetId").toString(),
                 doc.get("username").toString(),
@@ -255,7 +256,62 @@ public class Mongo {
                 Integer.parseInt(doc.get("nbResponses").toString()),
                 Integer.parseInt(doc.get("nbRetweets").toString()),
                 Integer.parseInt(doc.get("nbLikes").toString()));
+        if(doc.containsKey("note") && doc.get("note")!=null){
+            t.setNote(Float.parseFloat(doc.get("note").toString()));
+        }
+
+        return t;
     }
+
+
+
+    /**
+     * Retourne la liste des tweets ayant une note non vide
+     * @return une liste de tweets
+     */
+    public ArrayList<Tweet> GetTweetsAppge() {
+        ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+        ArrayList<Document> documents;
+
+        //uniquement les tweets avec une note non nulle
+        BasicDBObject NNQuery = new BasicDBObject();
+        NNQuery.put("note", new BasicDBObject("$exists", true));
+        documents = twitter.find(NNQuery).into(new ArrayList<Document>());
+
+        Iterator<Document> iter = documents.iterator();
+        while (iter.hasNext()) {
+            Document doc = iter.next();
+            Tweet t = DocToTweet(doc);
+            tweets.add(t);
+        }
+        return tweets;
+    }
+
+
+
+    /**
+     * Met à jour le champ note pour une liste de tweets
+     * @param tweetList ArrayList de tweets
+     */
+    public void UpdateMongo(ArrayList<Tweet> tweetList) {
+
+        Iterator<Tweet> iter = tweetList.iterator();
+        while (iter.hasNext()) {
+            Tweet t = iter.next();
+            if(t.getNote()!= 0.0f){
+                BasicDBObject docUPD = new BasicDBObject();
+                docUPD.append("$set", new BasicDBObject().append("note", t.getNote()));
+
+                BasicDBObject searchQuery = new BasicDBObject().append("TweetId", t.getTweetId());
+
+                twitter.updateOne(searchQuery, docUPD);
+            }
+        }
+    }
+
+
+
+
 
     /**
      * Juste pour la démo, j'l'ai fait quand même :p ça peut servir on sait jamais !
