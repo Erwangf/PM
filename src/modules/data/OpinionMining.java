@@ -1,13 +1,11 @@
 package modules.data;
 
 import modules.keywords.Keywords;
-import org.apache.commons.collections4.map.MultiKeyMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 
 
 /**
@@ -36,15 +34,7 @@ public class OpinionMining {
     }
 
     public static Map<String, Float> buildScoreIndex_v1(ArrayList<Tweet> tweets) {
-         class NbSumCouple {
-            public int nb;
-            public float somme;
 
-            public NbSumCouple(int nb, float somme) {
-                this.nb = nb;
-                this.somme = somme;
-            }
-        }
         Map<String, NbSumCouple> wmap = new LinkedHashMap<>();
         tweets.forEach((t) -> {
             if (t.getNote() != 0) {
@@ -72,6 +62,46 @@ public class OpinionMining {
 
     }
 
+
+    public static Map<String, Float> buildScoreIndex_v2(ArrayList<Tweet> tweets) {
+
+        Map<String, WordCombo> wmap = new LinkedHashMap<>();
+        tweets.forEach((t) -> {
+            if (t.getNote() != 0) {
+                ArrayList<String> words = Keywords.FilterStopWords(new ArrayList<>(Arrays.asList(t.getContent().split(" "))), Keywords.GetStopWords());
+                for (int i = 0; i < words.size(); i++) {
+                    for (int j = 0; j < i; j++) {
+
+                        String w1 = words.get(i);
+                        String w2 = words.get(j);
+                        ArrayList<String> l = new ArrayList<String>();
+                        l.add(w1);
+                        l.add(w2);
+                        WordCombo wc = new WordCombo(l);
+                        String key = wc.key;
+                        wc.sum = t.getNote();
+                        wc.count = 1;
+                        if (wmap.get(key) == null) {
+                            wmap.put(key, wc);
+                        } else {
+                            wmap.get(key).update(t.getNote());
+                        }
+                    }
+                }
+            }
+        });
+
+        Map<String, Float> result = new LinkedHashMap<>();
+        wmap.forEach((key, value) -> {
+            result.put(key, value.sum / value.count);
+        });
+        scoreIndex = result;
+        System.out.println(result);
+        return result;
+
+    }
+
+
     public static float getScore_v1(String tweetContent) {
         float sum = 0;
         int n = 0;
@@ -79,7 +109,7 @@ public class OpinionMining {
         for (String word : words) {
             if (scoreIndex.containsKey(word)) {
                 float score = scoreIndex.get(word);
-                if(score>0.0f || score<-0.0f){
+                if (score > 0.5f || score < -0.1f) {
                     sum += scoreIndex.get(word);
                     n++;
                 }
@@ -87,7 +117,27 @@ public class OpinionMining {
         }
         if (n == 0) n = 1;
         return sum / n;
+    }
 
+
+    public static float getScore_v2(String tweetContent) {
+        float sum = 0;
+        int n = 0;
+        String[] words = tweetContent.split(" ");
+        for (int i=0; i<words.length; i++) {
+            for(int j=0; j<=i; j++) {
+                String key = words[i] + " "+ words[j];
+                if (scoreIndex.containsKey(key)) {
+                    float score = scoreIndex.get(key);
+                    if (score > 0.5f || score < -0.1f) {
+                        sum += scoreIndex.get(key);
+                        n++;
+                    }
+                }
+            }
+        }
+        if (n == 0) n = 1;
+        return sum / n;
     }
 
 }

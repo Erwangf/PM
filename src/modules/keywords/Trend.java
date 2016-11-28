@@ -34,7 +34,7 @@ public class Trend extends JPanel {
         this.base = base;
     }
 
-    public Trend(final String title) {
+    public Trend() {
 
         //Etape 0 : constructeur (et déclarations)
 
@@ -73,25 +73,35 @@ public class Trend extends JPanel {
 
 
         //Etape 3 : Préparation de la fenetre
-        ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+        ChartPanel chartPanel = new ChartPanel(chart){
+
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(640, 480);
+            }
+        };
         chartPanel.setMouseZoomable(true, false);
-        add(chartPanel);
+        this.setLayout(new BorderLayout());
+        add(chartPanel,BorderLayout.CENTER);
 
     }
+
+
 
     public static void main(final String[] args) {
 
         //Etape 4 : Affichage du  graphique
-        JFrame frame = new JFrame("Test Tweet List");
+        JFrame frame = new JFrame("Test Trends");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Trend trend = new Trend("Tendance des tweets");
+        Trend trend = new Trend();
         Mongo myBase = new Mongo();
         myBase.ConnexionMongoDefault();
         trend.setBase(myBase);
         trend.initialize();
-        frame.setContentPane(trend);
+
+       frame.setContentPane(trend);
+
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

@@ -12,7 +12,10 @@ public class TweetIO {
 
         ArrayList<Tweet> learnT = readFromCSV("./config/tweets101_370.csv");
         OpinionMining.buildScoreIndex_v1(learnT);
-        ArrayList<Tweet> testT = readFromCSV("./config/tweets101_370.csv");
+        OpinionMining.scoreIndex.forEach((k,v)->{
+            System.out.println(k+":"+v);
+        });
+        ArrayList<Tweet> testT = readFromCSV("./config/test70.csv");
         final int[] correctPositiveResults = {0};
         final int[] correctNegativeResults = {0};
         final int[] correctNullResults = {0};
@@ -25,7 +28,7 @@ public class TweetIO {
 
             if (rawPrevision > 0.5f) {
                 prevision = 1;
-            } else if (rawPrevision < -0.5f) {
+            } else if (rawPrevision < -0.1f) {
                 prevision = -1;
             }
             System.out.println("Prévision = " + prevision + " original = " + tweet.getNote() + " raw = " + rawPrevision);
@@ -124,12 +127,9 @@ public class TweetIO {
                 // use comma as separator
                 String[] fields = line.split("\"" + CSV_SEPARATOR + "\"");
                 for (int i = 0; i < fields.length; i++) {
-                    System.out.println(fields[i]);
                     fields[i] = fields[i].replace("\"", "");
                 }
 
-                System.out.println(fields.length);
-                System.out.println(fields[0]);
                 Tweet t = new Tweet(
                         fields[0], //user,
                         fields[1], //tweetID

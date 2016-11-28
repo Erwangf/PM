@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import modules.keywords.Keywords;
+import modules.keywords.Trend;
 import modules.tweetList.TweetExplorerModule;
 import org.json.JSONException;
 
@@ -50,6 +51,7 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		super();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1200, 800);
 		setLocationRelativeTo(null);
@@ -82,24 +84,28 @@ public class MainFrame extends JFrame {
 		tem.setBase(base);
 		tem.initialize();
 
-		TweetExplorerModule tem2 = new TweetExplorerModule();
-		contentPane.add(tem2);
-		tem2.setBase(base);
-		tem2.initialize();
-
-		TweetExplorerModule tem3 = new TweetExplorerModule();
-		contentPane.add(tem3);
-		tem3.setBase(base);
-		tem3.initialize();
-
 		//Keywords module
 
-//		Keywords kw = new Keywords();
-//		kw.setBase(base);
-//		kw.initialize();
-//		contentPane.add(kw);
+		Keywords kw = new Keywords();
+		kw.setBase(base);
+
+		contentPane.add(kw);
 
 		//Trends module
+
+		Trend tr = new Trend();
+		tr.setBase(base);
+		contentPane.add(tr);
+		this.setVisible(true);
+
+
+
+
+
+		//start
+		tr.initialize();
+		kw.initialize();
+
 
 
 
