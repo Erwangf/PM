@@ -2,34 +2,42 @@ package modules.keywords;
 // import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 
 public class Fenetre extends JFrame {
 	// private Panneau pan = new Panneau();
 	JPanel pan = new JPanel(); /* Instanciation d'un objet JPanel */
-	private JButton bouton = new JButton("Mon bouton");
+	private JButton bouton = new JButton("Afficher un message");
+	private JButton btnCount = new JButton("compteur de tweet");
+	private JButton btnEnreg = new JButton("fenetre enregistrement fichier");
+	private JButton btnTwitterSearch = new JButton("twitter search");
+	private JButton btnClear = new JButton("vide la BD");
 	
 	public Fenetre(){
-//	    this.setTitle("Fenêtre"); /* Titre */
-//	    this.setSize(400, 500); /* Taille de la fenêtre */
+//	    this.setTitle("Fenï¿½tre"); /* Titre */
+//	    this.setSize(400, 500); /* Taille de la fenÃªtre */
 //	    this.setLocationRelativeTo(null); /* Position au centre */ 
-//	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); /* Ferme la fenêtre lorsque l'on clique sur la croix rouge */ 
+//	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); /* Ferme la fenï¿½tre lorsque l'on clique sur la croix rouge */ 
 //	    
 // 		pan.setBackground(Color.WHITE); /* Couleur de fond */   
-//      this.setContentPane(pan); /* On prévient notre JFrame que notre JPanel sera son content pane */
+//      this.setContentPane(pan); /* On prï¿½vient notre JFrame que notre JPanel sera son content pane */
 //        
 //      this.setContentPane(new Panneau()); /* Appel Panneau */
-//	    this.setVisible(true); /* Affiche la fenêtre */ 
+//	    this.setVisible(true); /* Affiche la fenï¿½tre */ 
     
 		  this.setTitle("Animation");
 	      this.setSize(1000, 500);
 	      this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      this.setLocationRelativeTo(null);
-	      //Ajout du bouton à notre content pane
-	      //On définit le layout à utiliser sur le content pane
+	      //Ajout du bouton ï¿½ notre content pane
+	      //On dï¿½finit le layout ï¿½ utiliser sur le content pane
 	      //Trois lignes sur deux colonnes
 	      GridLayout gl = new GridLayout();
 	      gl.setColumns(2); // 2 colonnes
@@ -41,9 +49,44 @@ public class Fenetre extends JFrame {
 	      this.getContentPane().add(new JButton("Button 1"));
 	      this.getContentPane().add(new JButton("2"));
 	      this.getContentPane().add(new JButton("3"));
-	      this.getContentPane().add(new JButton("4"));
-	      this.getContentPane().add(new JButton("5"));
+	      this.getContentPane().add(btnEnreg);
+	      this.getContentPane().add(btnCount);
+	      this.getContentPane().add(bouton);
 	      this.setVisible(true);
+	      
+	      bouton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				afficherMsg();
+				
+			}
+			
+			
+		});
+	      
+	      btnCount.addActionListener(new ActionListener() {
+				
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ftnCount();
+				
+			}
+			
+			
+		});
+	      
+	      btnEnreg.addActionListener(new ActionListener() {
+				
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ftnBteDial();
+				
+			}
+			
+			
+		});
+	      
 	 }
 	 
 	 /* ANIMATION LIGNE DE CERCLE ROUGE 
@@ -74,21 +117,21 @@ public class Fenetre extends JFrame {
 	  } */
 	 
 	 /* private void go(){
-		  //Les coordonnées de départ de notre rond
+		  //Les coordonnï¿½es de dï¿½part de notre rond
 		  int x = pan.getPosX(), y = pan.getPosY();
-		  //Le booléen pour savoir si l'on recule ou non sur l'axe x
+		  //Le boolï¿½en pour savoir si l'on recule ou non sur l'axe x
 		  boolean backX = false;
-		  //Le booléen pour savoir si l'on recule ou non sur l'axe y
+		  //Le boolï¿½en pour savoir si l'on recule ou non sur l'axe y
 		  boolean backY = false;
 
 		  //Dans cet exemple, j'utilise une boucle while
-		  //Vous verrez qu'elle fonctionne très bien
+		  //Vous verrez qu'elle fonctionne trï¿½s bien
 		  while(true){
-		    //Si la coordonnée x est inférieure à 1, on avance
+		    //Si la coordonnï¿½e x est infï¿½rieure ï¿½ 1, on avance
 		    if(x < 1)
 		      backX = false;
 
-		    //Si la coordonnée x est supérieure à la taille du Panneau moins la taille du rond, on recule
+		    //Si la coordonnï¿½e x est supï¿½rieure ï¿½ la taille du Panneau moins la taille du rond, on recule
 		    if(x > pan.getWidth()-50)
 		      backX = true;
 
@@ -98,13 +141,13 @@ public class Fenetre extends JFrame {
 		    if(y > pan.getHeight()-50)
 		      backY = true;
 
-		    //Si on avance, on incrémente la coordonnée
-		    //backX est un booléen, donc !backX revient à écrire
+		    //Si on avance, on incrï¿½mente la coordonnï¿½e
+		    //backX est un boolï¿½en, donc !backX revient ï¿½ ï¿½crire
 		    //if (backX == false)
 		    if(!backX)
 		      pan.setPosX(++x);
 
-		    //Sinon, on décrémente
+		    //Sinon, on dï¿½crï¿½mente
 		    else
 		      pan.setPosX(--x);
 
@@ -117,7 +160,7 @@ public class Fenetre extends JFrame {
 		    //On redessine notre Panneau
 		    pan.repaint(); 
 
-		    //pause de trois millièmes de seconde
+		    //pause de trois milliï¿½mes de seconde
 		    try {
 		      Thread.sleep(1);
 		    } catch (InterruptedException e) {
@@ -125,5 +168,35 @@ public class Fenetre extends JFrame {
 		    }
 		  } 
 		} */
-		  
+		
+	public void afficherMsg(){
+		System.out.println("Vous avez cliquÃ© sur le bouton !!");
+	}
+	
+	public void ftnCount(){
+		System.out.println("La fonction Count marche correctement !!");
+		modules.data.Mongo base = new modules.data.Mongo();
+		base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
+		int nbTweet = (int) base.GetNbTweets();
+		
+		System.out.println("Il y a " + nbTweet + " tweets dans la base de donnÃ©es MongoDB.");
+	}
+	
+	public void ftnBteDial(){
+		JFileChooser saveFile = new JFileChooser();
+		//saveFile.showSaveDialog(null);
+		//saveFile.showOpenDialog(null);
+		
+	    JFileChooser chooser = new JFileChooser();
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+	    		"csv files", "csv");
+	    chooser.setFileFilter(filter);
+	    int returnVal = chooser.showSaveDialog(null);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	       System.out.println("You chose to open this file: " +
+	            chooser.getSelectedFile().getName());
+	       System.out.println("You chose to open this path: " +
+		            chooser.getSelectedFile().getParent());
+	    }
+	}
 }
