@@ -56,7 +56,7 @@ public class TweetIO {
                 }
             }
 
-            tweet.setNote(prevision);
+            tweet.setNote(((float) prevision));
 
         }));
 
@@ -141,7 +141,7 @@ public class TweetIO {
                         Integer.parseInt(fields[7]) //nblikes
                 );
 
-                t.setNote(Integer.parseInt(fields[8]));
+                t.setNote(Float.parseFloat(fields[8]));
 
                 res.add(t);
 

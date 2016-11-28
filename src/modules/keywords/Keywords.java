@@ -1,8 +1,6 @@
 package modules.keywords;
 import java.awt.BorderLayout;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,8 +27,9 @@ import java.util.regex.*;
 public class Keywords extends JPanel {
 	
 	private Mongo base;
+	private final JPanel waitingPanel;
 
-    public void setMonboBase(Mongo b){
+	public void setMonboBase(Mongo b){
     	this.base = b;
     }
 
@@ -114,14 +113,15 @@ public class Keywords extends JPanel {
 		{
 			if(stopwords!=null) return stopwords;
 
-			FileReader monFichier = null;
+			InputStream monFichier = null;
 			BufferedReader tampon = null;
 
 			stopwords = new ArrayList<String>();
 
 			try {
-				monFichier = new FileReader("./config/StopWords.csv");	// Tu n'a qu'a changer le chemin du fichier csv contenant les tweets
-				tampon = new BufferedReader(monFichier);
+				monFichier = Keywords.class.getClassLoader().getResourceAsStream("config/StopWords.csv");	// Tu n'a qu'a changer le chemin du fichier csv contenant les tweets
+				tampon = new BufferedReader(new InputStreamReader(monFichier));
+
 
 				String element;
 				int c;
@@ -139,8 +139,12 @@ public class Keywords extends JPanel {
 				exception.printStackTrace();
 			} finally {
 				try {
-					tampon.close();
-					monFichier.close();
+					if (tampon != null) {
+						tampon.close();
+					}
+					if (monFichier != null) {
+						monFichier.close();
+					}
 				} catch(IOException exception1) {
 					exception1.printStackTrace();
 				}
@@ -265,6 +269,9 @@ public class Keywords extends JPanel {
 
 	public Keywords(){
 		super();
+		waitingPanel = new JPanel();
+		waitingPanel.add(new JLabel("Chargement en cours..."));
+		add(waitingPanel);
 	}
 
 	public void setBase(Mongo m){
@@ -302,8 +309,10 @@ public class Keywords extends JPanel {
 		};
 
 		tableau.setModel(tableModel);
-        
+		remove(waitingPanel);
 		add(new JScrollPane(tableau), BorderLayout.CENTER);
+
+
 
 
 		

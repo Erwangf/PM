@@ -40,6 +40,7 @@ public class MainFrame extends JFrame {
 			public void run() {
 				try {
 					MainFrame frame = new MainFrame();
+                    frame.pack();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -97,7 +98,6 @@ public class MainFrame extends JFrame {
 		Trend tr = new Trend();
 		tr.setBase(base);
 		contentPane.add(tr);
-		this.setVisible(true);
 
 
 		//Data module
@@ -106,13 +106,27 @@ public class MainFrame extends JFrame {
         intD.setBase(base);
         contentPane.add(intD);
 
+        this.setVisible(true);
+
 
 
 
 
 		//start
 		tr.initialize();
-		kw.initialize();
+
+
+        System.out.println("TR LOADED !");
+        Thread _t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                kw.initialize();
+                System.out.println("LOADED !");
+                pack();
+            }
+        });
+        _t.start();
+
 
 
 

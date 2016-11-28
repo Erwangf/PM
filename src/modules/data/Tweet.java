@@ -16,7 +16,7 @@ public class Tweet {
     private int nbLikes;
     private String originalTweetd;
     private String inReplyToTweetId;
-    private float note;
+    private Float note;
 
 
     /*================================================================================================*/
@@ -53,23 +53,25 @@ public class Tweet {
     //            FUNCTIONS & METHODS
     /*================================================================================================*/
 
-
     @Override
     public String toString() {
         return "Tweet{" +
                 "user='" + user + '\'' +
+                ", tweetId='" + tweetId + '\'' +
                 ", username='" + username + '\'' +
-                ", timeStamp=" + timeStamp.getTime() +
+                ", timeStamp=" + timeStamp +
                 ", content='" + content + '\'' +
                 ", nbResponses=" + nbResponses +
                 ", nbRetweets=" + nbRetweets +
                 ", nbLikes=" + nbLikes +
+                ", originalTweetd='" + originalTweetd + '\'' +
+                ", inReplyToTweetId='" + inReplyToTweetId + '\'' +
+                ", note=" + note +
                 '}';
     }
 
 
-
-    /*================================================================================================*/
+/*================================================================================================*/
     //            GETTERS & SETTERS
     /*================================================================================================*/
 
@@ -154,11 +156,11 @@ public class Tweet {
         this.inReplyToTweetId = inReplyToTweetId;
     }
 
-    public float getNote() {
+    public Float getNote() {
         return note;
     }
 
-    public void setNote(float note) {
+    public void setNote(Float note) {
         this.note = note;
     }
 }
