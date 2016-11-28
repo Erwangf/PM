@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelListener;
 import java.util.Date;
+import java.util.function.Consumer;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -18,6 +19,12 @@ public class TweetCell extends JPanel {
 
 
     private Tweet associatedTweet;
+
+    public void setUpdateFunction(Consumer<Tweet> updateFunction) {
+        this.updateFunction = updateFunction;
+    }
+
+    private Consumer<Tweet> updateFunction;
 
 
     public TweetCell(Tweet _associatedTweet) {
@@ -88,7 +95,7 @@ public class TweetCell extends JPanel {
 
         JPanel notePanel = new JPanel();
         add(notePanel, BorderLayout.EAST);
-        notePanel.setLayout(new GridLayout(0, 1, 0, 0));
+        notePanel.setLayout(new GridLayout(0, 2, 0, 0));
 
         JLabel lblNote = new JLabel("Note :");
         notePanel.add(lblNote);
@@ -109,6 +116,9 @@ public class TweetCell extends JPanel {
         bg.add(rb0);
         bg.add(rbMinus);
         bg.add(rbNull);
+        
+        JLabel label = new JLabel(" ");
+        notePanel.add(label);
 
 
         notePanel.add(rbPlus);
@@ -123,6 +133,7 @@ public class TweetCell extends JPanel {
                 associatedTweet.setNote(Float.parseFloat(e.getActionCommand()));
             }
             System.out.println(associatedTweet);
+            updateFunction.accept(associatedTweet);
 
         };
 
@@ -150,5 +161,9 @@ public class TweetCell extends JPanel {
         }
 
 
+
+
     }
+
+
 }

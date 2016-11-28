@@ -298,7 +298,7 @@ public class Mongo {
         Iterator<Tweet> iter = tweetList.iterator();
         while (iter.hasNext()) {
             Tweet t = iter.next();
-            if(t.getNote()!= 0.0f){
+            if(t.getNote()!= null){
                 BasicDBObject docUPD = new BasicDBObject();
                 docUPD.append("$set", new BasicDBObject().append("note", t.getNote()));
 
@@ -306,6 +306,17 @@ public class Mongo {
 
                 twitter.updateOne(searchQuery, docUPD);
             }
+        }
+    }
+
+    public void UpdateMongoItem(Tweet t){
+        if(t.getNote()!= null){
+            BasicDBObject docUPD = new BasicDBObject();
+            docUPD.append("$set", new BasicDBObject().append("note", t.getNote()));
+
+            BasicDBObject searchQuery = new BasicDBObject().append("TweetId", t.getTweetId());
+
+            twitter.updateOne(searchQuery, docUPD);
         }
     }
 

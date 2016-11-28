@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,6 +25,12 @@ import modules.data.TwitterSearch;
 public class TweetListModule extends JPanel {
 
     private JPanel mainList;
+
+    public void setUpdateFunction(Consumer<Tweet> updateFunction) {
+        this.updateFunction = updateFunction;
+    }
+
+    private Consumer<Tweet> updateFunction;
 
     public TweetListModule() {
 
@@ -43,6 +50,7 @@ public class TweetListModule extends JPanel {
 
     public void AddTweet(Tweet t) {
         TweetCell panel = new TweetCell(t);
+        panel.setUpdateFunction(updateFunction);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
