@@ -47,10 +47,12 @@ public class Data extends JFrame implements ActionListener{
 		    TextArea t = new TextArea("5 lignes et 50 colonnes",3,35);  
 		    TextArea t2 = new TextArea("5 lignes et 50 colonnes",3,35);     
 		    bouton.addActionListener(this);
+		    
 		    fenetre.add(t);  
 		    fenetre.add(t2); 
 		    fenetre.show();  
-		    fenetre.pack();  
+		    fenetre.pack(); 
+		    fenetre.setLocationRelativeTo(null);
 		    
 		    go();
 		    
