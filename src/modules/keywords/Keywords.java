@@ -121,7 +121,8 @@ public class Keywords extends JPanel {
 			stopwords = new ArrayList<String>();
 
 			try {
-				monFichier = Keywords.class.getClassLoader().getResourceAsStream("config/StopWords.csv");	// Tu n'a qu'a changer le chemin du fichier csv contenant les tweets
+				//monFichier = Keywords.class.getClassLoader().getResourceAsStream("config/StopWords.csv");	//build
+				monFichier = new FileInputStream("./config/StopWords.csv"); //dev
 				tampon = new BufferedReader(new InputStreamReader(monFichier));
 
 

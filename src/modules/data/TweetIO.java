@@ -15,7 +15,7 @@ public class TweetIO {
         OpinionMining.scoreIndex.forEach((k,v)->{
             System.out.println(k+":"+v);
         });
-        ArrayList<Tweet> testT = readFromCSV("./config/test70.csv");
+        ArrayList<Tweet> testT = readFromCSV("./config/learning.csv");
         final int[] correctPositiveResults = {0};
         final int[] correctNegativeResults = {0};
         final int[] correctNullResults = {0};

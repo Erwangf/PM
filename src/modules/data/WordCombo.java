@@ -18,6 +18,8 @@ public class WordCombo {
         this.sum = 0;
         this.key = "";
         boolean first = true;
+        this.words.sort(String::compareTo);
+
         for (String word : words) {
             if (!first) this.key += " ";
             this.key += word;

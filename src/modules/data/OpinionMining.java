@@ -76,7 +76,8 @@ public class OpinionMining {
                         String w2 = words.get(j);
                         ArrayList<String> l = new ArrayList<String>();
                         l.add(w1);
-                        l.add(w2);
+
+                        if(!w2.equals(w1))l.add(w2);
                         WordCombo wc = new WordCombo(l);
                         String key = wc.key;
                         wc.sum = t.getNote();
@@ -125,7 +126,14 @@ public class OpinionMining {
         String[] words = tweetContent.split(" ");
         for (int i=0; i<words.length; i++) {
             for(int j=0; j<=i; j++) {
-                String key = words[i] + " "+ words[j];
+                String key;
+                if(words[i].compareTo(words[j])<0){
+                    key = words[i] + " "+ words[j];
+                }
+                else if(words[i].compareTo(words[j])>0){
+                        key = words[j] + " "+ words[i];
+                    }
+                else key = words[i];
                 if (scoreIndex.containsKey(key)) {
                     float score = scoreIndex.get(key);
                     if (score > 0.5f || score < -0.1f) {
