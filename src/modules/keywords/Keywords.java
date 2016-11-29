@@ -27,7 +27,9 @@ import java.util.regex.*;
 public class Keywords extends JPanel {
 	
 	private Mongo base;
-	private final JPanel waitingPanel;
+	private  JPanel waitingPanel;
+	private JTable tableau;
+	private JScrollPane tabPane;
 
 	public void setMonboBase(Mongo b){
     	this.base = b;
@@ -269,15 +271,20 @@ public class Keywords extends JPanel {
 
 	public Keywords(){
 		super();
-		waitingPanel = new JPanel();
-		waitingPanel.add(new JLabel("Chargement en cours..."));
-		add(waitingPanel);
+        setLayout(new BorderLayout());
 	}
 
 	public void setBase(Mongo m){
 		this.base = m;
 	}
 	public void initialize(){
+
+        waitingPanel = new JPanel(new BorderLayout());
+        ImageIcon loading = new ImageIcon("ajax-loader.gif");
+
+        waitingPanel.add(new JLabel("Veuillez patienter...",loading,JLabel.CENTER),BorderLayout.CENTER);
+        add(waitingPanel,BorderLayout.CENTER);
+        revalidate();
 
 
 		Map<String,Integer> myMap = PrintWords();
@@ -309,8 +316,11 @@ public class Keywords extends JPanel {
 		};
 
 		tableau.setModel(tableModel);
-		remove(waitingPanel);
+        removeAll();
+        revalidate();
 		add(new JScrollPane(tableau), BorderLayout.CENTER);
+        revalidate();
+        repaint();
 
 
 
