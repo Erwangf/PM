@@ -71,7 +71,7 @@ public class Keywords extends JPanel {
 			}*/
 			
 			ArrayList<String> words = WordExtractor(al);
-			ArrayList<String> stopWords=GetStopWords ();
+			ArrayList<String> stopWords=GetStopWords();
 			words = FilterStopWords(words,stopWords);
 			Map<String, Integer> count = new LinkedHashMap<>();
 			
@@ -141,6 +141,7 @@ public class Keywords extends JPanel {
 			} catch (IOException exception) {
 				exception.printStackTrace();
 			} finally {
+				System.out.println("Chargé "+stopwords.size()+" stopwords !");
 				try {
 					if (tampon != null) {
 						tampon.close();
@@ -281,7 +282,7 @@ public class Keywords extends JPanel {
 	public void initialize(){
 
         waitingPanel = new JPanel(new BorderLayout());
-        ImageIcon loading = new ImageIcon("ajax-loader.gif");
+        ImageIcon loading = new ImageIcon(Keywords.class.getResource("/ajax-loader.gif"));
 
         waitingPanel.add(new JLabel("Veuillez patienter...",loading,JLabel.CENTER),BorderLayout.CENTER);
         add(waitingPanel,BorderLayout.CENTER);

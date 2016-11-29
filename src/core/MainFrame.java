@@ -120,7 +120,11 @@ public class MainFrame extends JFrame {
 
 
         //start
-        tr.initialize();
+        new Thread(()->{
+            tr.initialize();
+            pack();
+        }).start();
+
 
 
         System.out.println("TR LOADED !");

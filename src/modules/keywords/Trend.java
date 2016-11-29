@@ -1,17 +1,19 @@
 package modules.keywords;
 
 import modules.data.Mongo;
+import modules.data.OpinionMining;
+import modules.data.Tweet;
 import org.bson.Document;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.RefineryUtilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,8 +29,10 @@ import java.util.Collections;
 public class Trend extends JPanel {
 
 
+    private JPanel waitingPanel;
     private boolean mensuel;
     private Mongo base;
+    private ArrayList<Tweet> datesList;
 
     public void setBase(Mongo base) {
         this.base = base;
@@ -41,14 +45,27 @@ public class Trend extends JPanel {
         super();
         mensuel = true;
 
+        this.setLayout(new BorderLayout());
+
 
     }
 
     public void initialize() {
 
+        removeAll();
+        revalidate();
+        repaint();
+        waitingPanel = new JPanel(new BorderLayout());
+        ImageIcon loading = new ImageIcon(Keywords.class.getResource("/ajax-loader.gif"));
+
+        waitingPanel.add(new JLabel("Veuillez patienter...",loading,JLabel.CENTER),BorderLayout.CENTER);
+        add(waitingPanel,BorderLayout.CENTER);
+        revalidate();
+        repaint();
+        datesList = null;
         //Etape 1 : dataset
         //Appel de la fonction createDataset qui charge les données
-        XYDataset dataset = createDataset(mensuel);
+        XYDataset dataset = createDataset(mensuel, 1); //rouge
 
 
         // Etape 2 : Creer le graphique
@@ -62,9 +79,22 @@ public class Trend extends JPanel {
                 false
         );
 
+
+
         //Paramretres
         chart.setBackgroundPaint(Color.white); //couleur de fond
-        final XYPlot plot = chart.getXYPlot();
+        XYPlot plot = chart.getXYPlot();
+        StandardXYItemRenderer sr1 = new StandardXYItemRenderer();
+        sr1.setSeriesPaint(0, Color.decode("#008663"));
+        plot.setRenderer(0,sr1);
+        plot.setDataset(1,createDataset(mensuel,0));
+        StandardXYItemRenderer sr2 = new StandardXYItemRenderer();
+        sr2.setSeriesPaint(0, Color.yellow);
+        plot.setRenderer(1,sr2);
+        plot.setDataset(2,createDataset(mensuel,-1)); //rouge
+        StandardXYItemRenderer sr3 = new StandardXYItemRenderer();
+        sr3.setSeriesPaint(0, Color.red);
+        plot.setRenderer(2,sr3);
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
@@ -82,7 +112,11 @@ public class Trend extends JPanel {
         };
         chartPanel.setMouseZoomable(true, false);
         this.setLayout(new BorderLayout());
+        removeAll();
+        revalidate();
         add(chartPanel,BorderLayout.CENTER);
+        revalidate();
+        repaint();
 
     }
 
@@ -109,24 +143,24 @@ public class Trend extends JPanel {
 
     }
 
-    private XYDataset createDataset(boolean mensuel) {
+    private XYDataset createDataset(boolean mensuel, int note) {
 
 
         //Reccuperation des dates et du nb de tweets
-        ArrayList<Document> datesList = base.GetAllDates();
+        if(datesList==null)datesList = base.GetAllTweets();
         int nbTweet = (int) base.GetNbTweets();
 
         //Création d'une collection de timestamp
         ArrayList<Timestamp> dates = new ArrayList<>();
 
         //Conversion doc.dates => timestamp(milliseconde) => timestamp(seconde)
-        Document doc;
+        Tweet doc;
         Timestamp nbs;
         int i;
         for (i = nbTweet - 1; i >= 0; i--) {
             doc = datesList.get(i);
-            nbs = new Timestamp(Long.parseLong(doc.get("date").toString()) * 1000);
-            dates.add(nbs);
+            nbs = new Timestamp((long) doc.getTimeStamp().getTime() * 1000);
+            if(OpinionMining.getPrevision_v2(doc.getContent()) == note ) dates.add(nbs);
         }
         //Tri de l'arraylist pour avoir les dates dans l'ordre
         Collections.sort(dates);
@@ -154,7 +188,7 @@ public class Trend extends JPanel {
             int dateYear = Integer.parseInt(date_annee.format(dates.get(0)));
             date_cour = formatdate2.format(dates.get(0));
             //Demarrage de la bouble for : pour chaque date,
-            for (i = 1; i < nbTweet; i++) {
+            for (i = 1; i < dates.size(); i++) {
                 //Enregistrement de la date i
                 date_i = formatdate2.format(dates.get(i));
                 //Si date i est égale à la date précédente (courante), on incrémente le comptage de 1
