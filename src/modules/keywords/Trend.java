@@ -50,6 +50,7 @@ public class Trend extends JPanel {
     }
 
     public void initialize() {
+        if(base.GetNbTweets()==0) return;
 
         removeAll();
         revalidate();
@@ -73,7 +74,7 @@ public class Trend extends JPanel {
                 "Date",
                 "Nombre de tweets par" + (mensuel ? "mois" : "jour"),
                 dataset,
-                false,
+                true,
                 true,
                 false
         );
@@ -153,6 +154,24 @@ public class Trend extends JPanel {
 
     private XYDataset createDataset(boolean mensuel, int note, boolean includeAll) {
 
+        String titre = "Tweets";
+        if(!includeAll){
+            switch (note){
+                case 1:
+                    titre = "Positifs";
+                    break;
+                case 0:
+                    titre = "Neutres";
+                    break;
+                case -1:
+                    titre = "Négatifs";
+                    break;
+                default:
+                    titre = "erreur";
+                    break;
+
+            }
+        }
 
         //Reccuperation des dates et du nb de tweets
         if(datesList==null)datesList = base.GetAllTweets();
@@ -172,6 +191,7 @@ public class Trend extends JPanel {
         }
         //Tri de l'arraylist pour avoir les dates dans l'ordre
         Collections.sort(dates);
+        if(dates.size()==0) return null;
 
 //Comptage par mois
         if (mensuel) {
@@ -185,7 +205,7 @@ public class Trend extends JPanel {
 
             //Creation et ajout des TimeSeries dans le dataset
             TimeSeriesCollection dataset = new TimeSeriesCollection();
-            TimeSeries s = new TimeSeries("Tweets", Month.class);
+            TimeSeries s = new TimeSeries(titre, Month.class);
 
             //initialisation du comptage
             int cum = 1;
@@ -233,7 +253,9 @@ public class Trend extends JPanel {
 
             //Creation et ajout des TimeSeries dans le dataset
             TimeSeriesCollection dataset = new TimeSeriesCollection();
-            TimeSeries s = new TimeSeries("Tweets", Day.class);
+
+
+            TimeSeries s = new TimeSeries(titre, Day.class);
 
             //initialisation du comptage
             int cum = 1;

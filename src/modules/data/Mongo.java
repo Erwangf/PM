@@ -91,7 +91,7 @@ public class Mongo {
      * @param tweetList La liste de Tweets à insérer
      */
     public void InsertMongo(ArrayList<Tweet> tweetList) {
-        twitter.drop();
+
         Iterator<Tweet> iter = tweetList.iterator();
         while (iter.hasNext()) {
             Tweet t = iter.next();

@@ -11,10 +11,10 @@ public class TweetIO {
     public static void main(String[] args) {
 
         ArrayList<Tweet> learnT = readFromCSV("./config/tweets101_370.csv");
+        learnT.addAll(readFromCSV("./config/test70.csv"));
+        learnT.addAll(readFromCSV("./config/learning3.csv"));
         OpinionMining.buildScoreIndex_v2(learnT);
-        OpinionMining.scoreIndex.forEach((k,v)->{
-            System.out.println(k+":"+v);
-        });
+        OpinionMining.scoreIndex.forEach((k,v)-> System.out.println(k+":"+v));
         ArrayList<Tweet> testT = readFromCSV("./config/learning.csv");
         final int[] correctPositiveResults = {0};
         final int[] correctNegativeResults = {0};

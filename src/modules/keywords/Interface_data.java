@@ -3,20 +3,15 @@ package modules.keywords;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import modules.data.Mongo;
+import modules.data.TwitterSearch;
 import org.json.JSONException;
 
 import modules.data.Tweet;
 
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -24,16 +19,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
-import javax.swing.DefaultComboBoxModel;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import javax.swing.BoxLayout;
 import java.awt.Component;
 import java.awt.Insets;
 import java.util.function.Consumer;
-import javax.swing.SwingConstants;
 
 public class Interface_data extends JPanel {
 
@@ -137,6 +129,7 @@ public class Interface_data extends JPanel {
         JButton Bvalider = new JButton("Lancer la recherche");
         center_center.add(Bvalider, BorderLayout.SOUTH);
 
+
         JPanel panel = new JPanel();
         center_center.add(panel, BorderLayout.NORTH);
 
@@ -159,7 +152,7 @@ public class Interface_data extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     /*//cr�ation de l'instance mongo
-					modules.data.Mongo base = new modules.data.Mongo();
+                    modules.data.Mongo base = new modules.data.Mongo();
 						
 						//connexion � la base distante
 						base.ConnexionMongo("ds147537.mlab.com",47537,"twitter_rumors", "Twitter", "root", "TwitterMongo2016");
@@ -197,36 +190,40 @@ public class Interface_data extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 // Methode qui va effacer le contenu de la base de données
+                base.DropMongo();
+                nb_tweet.setText(Long.toString(base.GetNbTweets()));
+
             }
         });
         Bvalider.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+
                 String nb = Liste_nbre.getSelectedItem().toString();
                 String mots_cles = text_mots.getText();
 
                 int i = Integer.parseInt(nb);
                 //System.out.println(Liste_nbre.getSelectedItem().toString());
 
-                modules.data.TwitterSearch base2 = new modules.data.TwitterSearch();
-                ArrayList<Tweet> TweetList = new ArrayList<Tweet>();
+                ArrayList<Tweet> tweetList = new ArrayList<Tweet>();
                 try {
-                    TweetList = base2.getTweetsFromTwitter(i, mots_cles);
-                    //base.InsertMongo(TweetList);
+
+                    tweetList = TwitterSearch.getTweetsFromTwitter(i, mots_cles);
+
+                    revalidate();
+                    repaint();
+                    base.InsertMongo(tweetList);
+                    nb_tweet.setText(Long.toString(base.GetNbTweets()));
+
 
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
-                } catch (JSONException e1) {
+                } catch (JSONException e2) {
                     // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                    e2.printStackTrace();
                 }
 
-                // + ALIMENTER LA BASE DE DONNÉES DES TWEETS RECUPERES
-				/*int h=1;
-				for(Tweet v : TweetList){
-					System.out.println(v);
-					h++;
-				}*/
 
             }
         });
@@ -246,15 +243,13 @@ public class Interface_data extends JPanel {
                     String numberAsString = Long.toString(nbre);
                     nb_tweet.setText(numberAsString);
                     callUpdate.accept(null);
-                    ;
                 } catch (Exception e) {
                     System.out.println("ERREUR " + e);
                 }
 
             }
         });
-        ;
-		/*} catch (Exception e) {
+        /*} catch (Exception e) {
 			System.out.println("ERREUR "+ e);
 		} */
 

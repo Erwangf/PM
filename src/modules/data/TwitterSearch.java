@@ -197,6 +197,7 @@ public class TwitterSearch {
                 if (((double) (n - lastLog) / nMax) >= 0.01) {
                     lastLog = n;
                     System.out.println("Progress -> " + Math.round(((double) n / nMax) * 100) + "%");
+
                 }
                 if (n == nMax)
                     break;
