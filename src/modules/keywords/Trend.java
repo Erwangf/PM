@@ -3,7 +3,6 @@ package modules.keywords;
 import modules.data.Mongo;
 import modules.data.OpinionMining;
 import modules.data.Tweet;
-import org.bson.Document;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -65,7 +64,7 @@ public class Trend extends JPanel {
         datesList = null;
         //Etape 1 : dataset
         //Appel de la fonction createDataset qui charge les données
-        XYDataset dataset = createDataset(mensuel, 1); //rouge
+        XYDataset dataset = createDataset(mensuel, 1, false); //rouge
 
 
         // Etape 2 : Creer le graphique
@@ -84,17 +83,26 @@ public class Trend extends JPanel {
         //Paramretres
         chart.setBackgroundPaint(Color.white); //couleur de fond
         XYPlot plot = chart.getXYPlot();
+
         StandardXYItemRenderer sr1 = new StandardXYItemRenderer();
         sr1.setSeriesPaint(0, Color.decode("#008663"));
         plot.setRenderer(0,sr1);
-        plot.setDataset(1,createDataset(mensuel,0));
+
+        plot.setDataset(1,createDataset(mensuel,0, false));
         StandardXYItemRenderer sr2 = new StandardXYItemRenderer();
         sr2.setSeriesPaint(0, Color.yellow);
         plot.setRenderer(1,sr2);
-        plot.setDataset(2,createDataset(mensuel,-1)); //rouge
+
+        plot.setDataset(2,createDataset(mensuel,-1, false)); //rouge
         StandardXYItemRenderer sr3 = new StandardXYItemRenderer();
         sr3.setSeriesPaint(0, Color.red);
         plot.setRenderer(2,sr3);
+
+        plot.setDataset(3,createDataset(mensuel,0,true));
+        StandardXYItemRenderer srAll = new StandardXYItemRenderer();
+        srAll.setSeriesPaint(0,Color.BLACK);
+        plot.setRenderer(3,srAll);
+
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
@@ -143,7 +151,7 @@ public class Trend extends JPanel {
 
     }
 
-    private XYDataset createDataset(boolean mensuel, int note) {
+    private XYDataset createDataset(boolean mensuel, int note, boolean includeAll) {
 
 
         //Reccuperation des dates et du nb de tweets
@@ -160,7 +168,7 @@ public class Trend extends JPanel {
         for (i = nbTweet - 1; i >= 0; i--) {
             doc = datesList.get(i);
             nbs = new Timestamp((long) doc.getTimeStamp().getTime() * 1000);
-            if(OpinionMining.getPrevision_v2(doc.getContent()) == note ) dates.add(nbs);
+            if(includeAll || OpinionMining.getPrevision_v2(doc.getContent()) == note ) dates.add(nbs);
         }
         //Tri de l'arraylist pour avoir les dates dans l'ordre
         Collections.sort(dates);

@@ -3,7 +3,6 @@ package modules.tweetList;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelListener;
 import java.util.Date;
@@ -22,6 +21,10 @@ public class TweetCell extends JPanel {
     private final Color negativeColor = new Color(229,95,95);
     private final Color nullColor = new Color(194, 192, 176);
     private final Color neutralColor = new Color(229, 218, 91);
+    private final Color posColorBis = new Color(113, 200, 120);
+    private final Color neutColorBis = new Color(196, 200, 127);
+    private final Color negColorBis = new Color(200, 120, 111);
+
 
 
     private Tweet associatedTweet;
@@ -49,6 +52,28 @@ public class TweetCell extends JPanel {
                     break;
                 default:
                     c = nullColor;
+
+            }
+            headerPanel.setBackground(c);
+
+        }
+        else{
+            Color c;
+            switch (associatedTweet.getNote().intValue()){
+                case 1: c = posColorBis;
+                    break;
+
+                case 0:
+                    c = neutColorBis;
+                    break;
+
+                case -1:
+                    c = negColorBis;
+                    break;
+
+                default:
+                    c = nullColor;
+                    break;
 
             }
             headerPanel.setBackground(c);
@@ -162,6 +187,26 @@ public class TweetCell extends JPanel {
             } else {
                 associatedTweet.setNote(Float.parseFloat(e.getActionCommand()));
             }
+            Color c;
+            switch (e.getActionCommand()){
+                case "1": c = posColorBis;
+                    break;
+
+                case "0":
+                    c = neutColorBis;
+                    break;
+
+                case "-1":
+                    c = negColorBis;
+                    break;
+
+                default:
+                    c = nullColor;
+                    break;
+
+            }
+            headerPanel.setBackground(c);
+            revalidate();
             System.out.println(associatedTweet);
             updateFunction.accept(associatedTweet);
 
