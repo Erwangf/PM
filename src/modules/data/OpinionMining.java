@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class OpinionMining {
 
-    public static Map<String, Float> scoreIndex = new LinkedHashMap<>();
+    public static Map<String, Float> scoreIndex;
 
 
     public static void main(String[] args) {
@@ -67,7 +67,7 @@ public class OpinionMining {
 
         Map<String, WordCombo> wmap = new LinkedHashMap<>();
         tweets.forEach((t) -> {
-            if (t.getNote() != 0) {
+            if (t.getNote()!= null && t.getNote()!=0) {
                 ArrayList<String> words = Keywords.FilterStopWords(new ArrayList<>(Arrays.asList(t.getContent().split(" "))), Keywords.GetStopWords());
                 for (int i = 0; i < words.size(); i++) {
                     for (int j = 0; j < i; j++) {
@@ -96,7 +96,6 @@ public class OpinionMining {
             result.put(key, value.sum / value.count);
         });
         scoreIndex = result;
-        System.out.println(result);
         return result;
 
     }
@@ -138,6 +137,17 @@ public class OpinionMining {
         }
         if (n == 0) n = 1;
         return sum / n;
+    }
+
+    public static int getPrevision_v2(String tweetContent){
+        float rawPrevision = getScore_v2(tweetContent);
+        int prevision = 0;
+        if (rawPrevision > 0.5f) {
+            prevision = 1;
+        } else if (rawPrevision < -0.1f) {
+            prevision = -1;
+        }
+        return prevision;
     }
 
 }

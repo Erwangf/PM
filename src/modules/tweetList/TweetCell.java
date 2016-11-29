@@ -12,19 +12,49 @@ import java.util.function.Consumer;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
+import modules.data.OpinionMining;
 import modules.data.Tweet;
 
 @SuppressWarnings("serial")
 public class TweetCell extends JPanel {
 
+    private final Color positiveColor = new Color(4, 175, 67);
+    private final Color negativeColor = new Color(229,95,95);
+    private final Color nullColor = new Color(194, 192, 176);
+    private final Color neutralColor = new Color(229, 218, 91);
+
 
     private Tweet associatedTweet;
+    private final JPanel headerPanel;
 
     public void setUpdateFunction(Consumer<Tweet> updateFunction) {
         this.updateFunction = updateFunction;
     }
 
     private Consumer<Tweet> updateFunction;
+
+
+    private void updatePrevision(){
+        if(OpinionMining.scoreIndex!=null && associatedTweet.getNote()==null){
+            Color c;
+            switch (OpinionMining.getPrevision_v2(associatedTweet.getContent())){
+                case 1:
+                    c = positiveColor;
+                    break;
+                case 0:
+                    c = neutralColor;
+                    break;
+                case -1:
+                    c = negativeColor;
+                    break;
+                default:
+                    c = nullColor;
+
+            }
+            headerPanel.setBackground(c);
+
+        }
+    }
 
 
     public TweetCell(Tweet _associatedTweet) {
@@ -34,7 +64,7 @@ public class TweetCell extends JPanel {
         setLayout(new BorderLayout(0, 0));
         this.setBorder(new MatteBorder(0, 0, 1, 0, Color.GRAY));
 
-        JPanel headerPanel = new JPanel();
+        headerPanel = new JPanel();
         headerPanel.setBackground(new Color(153, 204, 255));
 
         add(headerPanel, BorderLayout.NORTH);
@@ -159,6 +189,8 @@ public class TweetCell extends JPanel {
                     rbNull.setSelected(true);
             }
         }
+
+        updatePrevision();
 
 
 

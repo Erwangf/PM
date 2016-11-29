@@ -11,7 +11,7 @@ public class TweetIO {
     public static void main(String[] args) {
 
         ArrayList<Tweet> learnT = readFromCSV("./config/tweets101_370.csv");
-        OpinionMining.buildScoreIndex_v1(learnT);
+        OpinionMining.buildScoreIndex_v2(learnT);
         OpinionMining.scoreIndex.forEach((k,v)->{
             System.out.println(k+":"+v);
         });
@@ -24,7 +24,7 @@ public class TweetIO {
         final int[] incorrectNullResults = {0};
         testT.forEach((tweet -> {
             int prevision = 0;
-            float rawPrevision = OpinionMining.getScore_v1(tweet.getContent());
+            float rawPrevision = OpinionMining.getScore_v2(tweet.getContent());
 
             if (rawPrevision > 0.5f) {
                 prevision = 1;

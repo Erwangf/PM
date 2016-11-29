@@ -310,14 +310,14 @@ public class Mongo {
     }
 
     public void UpdateMongoItem(Tweet t){
-        if(t.getNote()!= null){
+
             BasicDBObject docUPD = new BasicDBObject();
             docUPD.append("$set", new BasicDBObject().append("note", t.getNote()));
 
             BasicDBObject searchQuery = new BasicDBObject().append("TweetId", t.getTweetId());
 
             twitter.updateOne(searchQuery, docUPD);
-        }
+
     }
 
 

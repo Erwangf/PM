@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import modules.data.OpinionMining;
 import modules.keywords.Interface_data;
 import modules.keywords.Keywords;
 import modules.keywords.Trend;
@@ -72,14 +73,17 @@ public class MainFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(2, 2, 10, 10));
-		
-		
+
+
+
+
+
 		// MongoDB Base
 		Mongo base = new Mongo();
 		base.ConnexionMongoDefault();
-		
-		
 
+
+        OpinionMining.buildScoreIndex_v2(base.GetTweetsAppge());
 		//Tweet Explorer Module
 		TweetExplorerModule tem = new TweetExplorerModule();
 		contentPane.add(tem);
@@ -104,6 +108,10 @@ public class MainFrame extends JFrame {
 
         Interface_data intD = new Interface_data();
         intD.setBase(base);
+        intD.setCallUpdate((t)->{
+            OpinionMining.buildScoreIndex_v2(base.GetTweetsAppge());
+            tem.initialize();
+        });
         contentPane.add(intD);
 
         this.setVisible(true);

@@ -32,6 +32,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import java.awt.Insets;
+import java.util.function.Consumer;
 import javax.swing.SwingConstants;
 
 public class Interface_data extends JPanel {
@@ -40,8 +41,16 @@ public class Interface_data extends JPanel {
     private JTextField text_mots;
     private JTextField nb_tweet;
 
+    public void setCallUpdate(Consumer callUpdate) {
+        this.callUpdate = callUpdate;
+    }
+
+    private Consumer callUpdate;
+
+
     public void setBase(Mongo base) {
         this.base = base;
+        this.nb_tweet.setText(Long.toString(base.GetNbTweets()));
     }
 
     private Mongo base;
@@ -221,6 +230,7 @@ public class Interface_data extends JPanel {
 
             }
         });
+
         Bupdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
 
@@ -235,6 +245,7 @@ public class Interface_data extends JPanel {
                     //String nbb = (nb);
                     String numberAsString = Long.toString(nbre);
                     nb_tweet.setText(numberAsString);
+                    callUpdate.accept(null);
                     ;
                 } catch (Exception e) {
                     System.out.println("ERREUR " + e);
